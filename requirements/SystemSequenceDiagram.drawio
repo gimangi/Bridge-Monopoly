@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-05-26T14:32:12.521Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="jl6v1hsfzP2H6y8UAjg9" version="18.1.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2022-05-26T14:33:44.573Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="bKKEMzcxPWUZuTm3RZeD" version="18.1.1" type="github" pages="2">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Start_the_Game">
     <mxGraphModel dx="697" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -51,7 +51,7 @@
         <mxCell id="jZU1QylxXE7mo_XxP9E7-20" value="[ invalid num of players ]" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
           <mxGeometry x="122" y="410" width="140" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="jZU1QylxXE7mo_XxP9E7-22" value="enterNumOfPlayers" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+        <mxCell id="jZU1QylxXE7mo_XxP9E7-22" value="enterNumOfPlayers(num: integer)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="121.24676470588236" y="451" as="sourcePoint" />
             <mxPoint x="449.5" y="451" as="targetPoint" />
