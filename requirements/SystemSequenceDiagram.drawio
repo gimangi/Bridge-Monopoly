@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-05-26T15:44:55.323Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="QpSA4eXMZaxZeP6zw_q3" version="18.1.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2022-05-26T15:46:20.695Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="DR_iSyqssBp1c5D7xM33" version="18.1.1" type="github" pages="2">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Start_the_Game">
     <mxGraphModel dx="697" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -95,7 +95,7 @@
         <mxCell id="7WkhbL4ykhHUe4-XgXFN-4" value="Proceed a Turn Scenario" style="text;html=1;resizable=0;autosize=1;align=center;verticalAlign=middle;points=[];fillColor=none;strokeColor=none;rounded=0;labelBackgroundColor=#FFFFFF;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="198" y="65" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="7WkhbL4ykhHUe4-XgXFN-7" value="proceedTurn(behavior)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+        <mxCell id="7WkhbL4ykhHUe4-XgXFN-7" value="proceedTurn(turnType)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="122.99999999999989" y="200" as="sourcePoint" />
             <mxPoint x="452.5" y="200" as="targetPoint" />
@@ -113,12 +113,12 @@
         <mxCell id="7WkhbL4ykhHUe4-XgXFN-15" value="alt" style="shape=umlFrame;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;width=70;height=27;labelBackgroundColor=#FFFFFF;" vertex="1" parent="1">
           <mxGeometry x="23" y="223" width="537" height="407" as="geometry" />
         </mxCell>
-        <mxCell id="7WkhbL4ykhHUe4-XgXFN-16" value="[behavior == stay]" style="text;labelBackgroundColor=#FFFFFF;" vertex="1" parent="7WkhbL4ykhHUe4-XgXFN-15">
+        <mxCell id="7WkhbL4ykhHUe4-XgXFN-16" value="[turnType == stay]" style="text;labelBackgroundColor=#FFFFFF;" vertex="1" parent="7WkhbL4ykhHUe4-XgXFN-15">
           <mxGeometry width="100" height="20" relative="1" as="geometry">
             <mxPoint x="100" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="7WkhbL4ykhHUe4-XgXFN-18" value="[behavior == move]" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;dashPattern=10 10;rounded=0;exitX=-0.001;exitY=0.454;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.189;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="7WkhbL4ykhHUe4-XgXFN-15" target="7WkhbL4ykhHUe4-XgXFN-15">
+        <mxCell id="7WkhbL4ykhHUe4-XgXFN-18" value="[turnType == move]" style="endArrow=none;startArrow=none;endFill=0;startFill=0;endSize=8;html=1;verticalAlign=bottom;dashed=1;labelBackgroundColor=none;dashPattern=10 10;rounded=0;exitX=-0.001;exitY=0.454;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.189;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="7WkhbL4ykhHUe4-XgXFN-15" target="7WkhbL4ykhHUe4-XgXFN-15">
           <mxGeometry x="-0.426" y="-18" width="160" relative="1" as="geometry">
             <mxPoint x="1.0658141036401503e-14" y="81.30908307141185" as="sourcePoint" />
             <mxPoint x="510.0000000000001" y="77.00144326878026" as="targetPoint" />
