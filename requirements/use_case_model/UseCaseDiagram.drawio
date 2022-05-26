@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-26T06:23:34.375Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="p7vmVJUK8e8kfTZuMAy_" version="18.1.1" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-26T06:24:16.631Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="HZ_Xw8_SI1HSjjgRhIhm" version="18.1.1" type="github">
   <diagram id="WLTdoUCkIdi1xevVH06I" name="BridgeMonopolyGame">
-    <mxGraphModel dx="322" dy="637" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="107" dy="212" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -17,7 +17,7 @@
           <mxGeometry x="215" y="220" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="eE-FobYrLtEV6sO1N_ra-25" value="{abstract}&lt;br&gt;Proceed a Turn" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="pQvjBnQ6-1oKnFR016Xf-2">
-          <mxGeometry x="37.5" y="258" width="110" height="50" as="geometry" />
+          <mxGeometry x="37.5" y="255" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="eE-FobYrLtEV6sO1N_ra-39" value="Load Map" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="pQvjBnQ6-1oKnFR016Xf-2">
           <mxGeometry x="305" y="40" width="110" height="50" as="geometry" />
