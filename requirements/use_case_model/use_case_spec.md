@@ -34,7 +34,7 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 | Preconditions                       | Commander는 사용할 맵 파일의 이름을 알고 있다.               |
 | Success Guarantee                   | 두 개 이상의 셀을 가지는 맵을 불러온다.</br>Player의 수는 2~4 범위에서 결정된다.</br>결정한 수만큼 Player를 생성한다. |
 | Main Success Scenario               | 1. Commander는 맵 파일의 이름을 입력한다.</br>2. include UC102 "Load Map".</br>3. Commander는 플레이어 수를 입력한다.</br>4. include UC103 "Initialize Players". |
-| Extensions                          | 1a. 해당하는 맵을 찾을 수 없는 경우</br> 1. 맵 파일 이름을 다시 입력 받는다.</br>2a. 입력된 셀의 개수가 2개 미만인 경우</br> 1. 오류 메시지를 표시하고 다시 입력 받는다.</br>3a. Player 수가 2~4 범위가 아닌 경우</br> 1. 다시 입력 받는다. |
+| Extensions                          | 1a. 해당하는 맵을 찾을 수 없는 경우</br>  1. 파일이 존재하지 않는다는 메시지를 표시한다.</br> 2. 스탭 1로 돌아간다.</br>2a. 입력된 셀의 개수가 2개 미만인 경우</br> 1. 올바르지 않은 맵이라고 표시한다.</br> 2. 스탭 1로 돌아간다.</br>3a. Player 수가 2~4 범위가 아닌 경우</br> 1. 스탭 3으로 돌아간다. |
 | Special Requirements                | -                                                            |
 | Technology and Data Variations List | -                                                            |
 | Frequency of Occurrence             | 게임을 실행할 경우 처음 한 번 일어난다.                      |
