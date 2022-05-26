@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-05-26T14:07:35.008Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="BFC7kzCwaVm2kICU33ai" version="18.1.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2022-05-26T14:32:12.521Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="jl6v1hsfzP2H6y8UAjg9" version="18.1.1" type="github" pages="2">
   <diagram id="kgpKYQtTHZ0yAKxKKP6v" name="Start_the_Game">
     <mxGraphModel dx="697" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -30,7 +30,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jZU1QylxXE7mo_XxP9E7-16" value="enterMapFileName(fileName)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" target="jZU1QylxXE7mo_XxP9E7-4" parent="1">
+        <mxCell id="jZU1QylxXE7mo_XxP9E7-16" value="loadMapFile(fileName)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" target="jZU1QylxXE7mo_XxP9E7-4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="120" y="300" as="sourcePoint" />
             <mxPoint x="439.5" y="300" as="targetPoint" />
