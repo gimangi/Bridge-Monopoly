@@ -6,17 +6,17 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 
 ## Index
 
-1. [**UC101: Start the Game**](#UC101: Start the Game)
+1. [**UC101: Start the Game**](#uc101:-start-the-game)
 
-2. [**UC102: Load Map**](#UC102: Load Map)
-3. [**UC103: Initialize Players**](#UC103: Initialize Players)
-4. [**UC201: Proceed a Turn**](#UC201: Proceed a Turn)
+2. [**UC102: Load Map**](#uc102:-load-map)
+3. [**UC103: Initialize Players**](#uc103:-initialize-players)
+4. [**UC201: Proceed a Turn**](#uc201:-proceed-a-turn)
 
-5. [**UC202: Stay Turn**](#UC202: Stay Turn)
-6. [**UC203: Move Piece Turn**](#UC203: Move Piece Turn)
-7. [**UC204: Roll a Dice**](#UC204: Roll a Dice)
-8. [**UC205: Combine Direction**](#UC205: Combine Direction)
-9. [**UC206: Arrive at the End**](#UC206: Arrive at the End)
+5. [**UC202: Stay Turn**](#uc202:-stay-turn)
+6. [**UC203: Move Piece Turn**](#uc203:-move-piece-turn)
+7. [**UC204: Roll a Dice**](#uc204:-roll-a-dice)
+8. [**UC205: Combine Direction**](#uc205:-combine-direction)
+9. [**UC206: Arrive at the End**](#uc206:-arrive-at-the-end)
 
 
 
