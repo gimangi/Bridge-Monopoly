@@ -26,7 +26,7 @@ BridgeMonopolyGame의 Operation Contracts를 분석한 결과입니다.
 | ---------------- | ------------------------------------------------------------ |
 | Cross References | Use cases: Start the Game                                    |
 | Preconditions    | -                                                            |
-| Postconditions   | Turn의 싱글톤인 turn이 생성된다. (instance creation)</br>Board의 싱글톤인 board가 생성된다. (instance creation)</br>DirectionCombiner의 싱글톤인 directionCombiner가 생성된다. (instance creation)</br>맵 정보의 한 줄마다 Cell의 인스턴스인 cell이 생성된다. (instance creation)</br>각 cell은 자신과 인접한 cell을 가리킨다. (attribute modification)</br>board에 cell을 추가한다. (attribute modification) |
+| Postconditions   | Turn의 인스턴스인 turn이 생성된다. (instance creation)</br>Board의 인스턴스인 board가 생성된다. (instance creation)</br>DirectionCombiner의 인스턴스인 directionCombiner가 생성된다. (instance creation)</br>맵 정보의 한 줄마다 Cell의 인스턴스인 cell이 생성된다. (instance creation)</br>각 cell은 자신과 인접한 cell을 가리킨다. (attribute modification)</br>board에 cell을 추가한다. (attribute modification) |
 
 
 
