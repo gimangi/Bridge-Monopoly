@@ -6,15 +6,17 @@ public class Player {
 
     private final int id;
 
-    private Piece piece;
+    private final Piece piece;
 
-    private Player(int id) {
+    private boolean isEnd = false;
+
+    private Player(int id, Piece piece) {
         this.id = id;
+        this.piece = piece;
     }
 
     public static Player newInstance() {
-        Player player = new Player(++numOfPlayers);
-        player.piece = new Piece();
+        Player player = new Player(++numOfPlayers, new Piece());
         return player;
     }
 
@@ -24,6 +26,12 @@ public class Player {
 
     public int getId() {
         return this.id;
+    }
+
+    
+
+    public boolean isEnd() {
+        return this.isEnd;
     }
 
 }

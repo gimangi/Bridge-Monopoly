@@ -1,4 +1,4 @@
-package model.domain.rule;
+package model.domain.test;
 
 import model.data.Direction;
 import model.domain.cell.Cell;
@@ -13,6 +13,9 @@ public class Test {
             Cell startCell = board.getStartCell();
 
             testMapMove(startCell);
+
+            board.createAbsoluteMap();
+            board.printAbsoluteMap();
 
         } catch (Exception e) {
             e.printStackTrace();

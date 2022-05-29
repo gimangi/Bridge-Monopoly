@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapDecoder {
@@ -45,16 +46,19 @@ public class MapDecoder {
         String curLine = "";
         String prevLine = "";
         Cell prevCell = null;
+        ArrayList<Cell> cellList = new ArrayList<>();
 
         try {
             // read all line
             while ((curLine = mReader.readLine()) != null) {
                 Cell cell = newCell(curLine, prevLine, prevCell);
+                cellList.add(cell);
                 prevLine = curLine;
                 prevCell = cell;
 
                 lineNum++;
             }
+            this.mBoard.putCellList(cellList);
 
         } catch (InvalidInputException e) {
             System.out.println("Invalid input : " + e.getLine());
