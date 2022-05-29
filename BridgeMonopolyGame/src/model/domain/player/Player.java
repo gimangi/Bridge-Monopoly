@@ -1,6 +1,7 @@
 package model.domain.player;
 
 import model.data.Direction;
+import model.data.MoveResult;
 import model.data.MoveType;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
@@ -40,17 +41,17 @@ public class Player {
         return this.id;
     }
 
-    public boolean move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
-        boolean res =  piece.move(dir, moveType);
+    public MoveResult move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
+        MoveResult moved =  piece.move(dir, moveType);
 
-        // moved
-        if (res) {
+        // when moved
+        if (moved != MoveResult.FAIL) {
             Cell curCell = piece.getCurCell();
             if (curCell instanceof ItemCell && ((ItemCell) curCell).getItemType() == ItemCell.ItemType.END)
                 this.isEnd = true;
         }
 
-        return res;
+        return moved;
     }
 
     public boolean isEnd() {
@@ -71,6 +72,10 @@ public class Player {
 
     public int getPenalty() {
         return this.penalty;
+    }
+
+    public Cell getPiecePosition() {
+        return this.piece.getCurCell();
     }
 
 }

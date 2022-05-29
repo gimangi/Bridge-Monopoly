@@ -26,11 +26,6 @@ public class Board {
      */
     private Cell[][] absoluteMap;
 
-    /*
-        Determines if the current map is going forward.
-     */
-    private Direction forwardDir = Direction.RIGHT;
-
     public Cell getStartCell() {
         return this.startCell;
     }

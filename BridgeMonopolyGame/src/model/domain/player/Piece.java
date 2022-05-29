@@ -1,6 +1,7 @@
 package model.domain.player;
 
 import model.data.Direction;
+import model.data.MoveResult;
 import model.data.MoveType;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
@@ -16,8 +17,9 @@ public class Piece {
         this.curCell = startCell;
     }
 
-    public boolean move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
+    public MoveResult move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
         Cell cur = curCell;
+        MoveResult res = MoveResult.SUCCESS;
 
         for (int i = 0; i < dir.size(); i++) {
             if (cur.isMovableDir(dir.get(i), moveType)) {
@@ -25,23 +27,26 @@ public class Piece {
 
                 if (cur instanceof BridgeCell && dest instanceof BridgeCell) {
                     if (!(i+1 < dir.size()))
-                        return false;
+                        return MoveResult.FAIL;
                     if (dir.get(i) != Direction.RIGHT)
-                        return false;
+                        return MoveResult.FAIL;
                     i++;
+                    res = MoveResult.SUCCESS_BRIDGED;
                 }
                 cur = dest;
             }
             else
-                return false;
+                return MoveResult.FAIL;
         }
 
         // move successfully
         this.curCell = cur;
-        return true;
+        return res;
     }
 
     public Cell getCurCell() {
         return curCell;
     }
+
+
 }

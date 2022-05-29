@@ -1,6 +1,8 @@
 package model.domain.rule;
 
 import model.data.Direction;
+import model.data.MoveResult;
+import model.data.MoveType;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
@@ -53,7 +55,22 @@ public abstract class BridgeMonopolyGame {
     /*
         Displays the result of the dice and receives the input direction to move.
      */
-    protected abstract @NotNull ArrayList<Direction> enterDirection(int diceResult);
+    protected abstract @NotNull ArrayList<Direction> enterDirection(int diceResult, int penalty);
+
+    /*
+        Alert that the direction cannot be moved.
+     */
+    protected abstract void alertInvalidMove();
+
+    /*
+        Show turn changes
+     */
+    protected abstract void displayResult();
+
+    /*
+        Display the winner
+     */
+    protected abstract void displayWinner();
 
     public void run() {
 
@@ -100,25 +117,32 @@ public abstract class BridgeMonopolyGame {
                 ArrayList<Direction> dirs;
 
                 while (true) {
-                    dirs = enterDirection(diceResult);
+                    dirs = enterDirection(diceResult, owner.getPenalty());
+                    MoveType moveType = MoveType.ADJACENT;
 
                     // not allow move back
-                    if (!turn.getAllowMoveBack()) {
+                    if (!turn.getAllowMoveBack())
+                        moveType = MoveType.FORWARD;
 
+                    MoveResult moveResult = owner.move(dirs, moveType);
+                    // move successfully
+                    if (moveResult != MoveResult.FAIL) {
+
+                        // get penalty
+                        if (moveResult == MoveResult.SUCCESS_BRIDGED)
+                            owner.addPenalty(1);
+                        break;
                     }
-
-                    // invalid move
-                    //if (owner.move)
-
+                    // can not move
+                    else
+                        alertInvalidMove();
                 }
 
-
-
             }
-
+            displayResult();
             turn.proceedTurn();
         }
-
+        displayWinner();
     }
 
 }

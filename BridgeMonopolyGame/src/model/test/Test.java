@@ -32,7 +32,7 @@ public class Test {
 
     private static void testMapMove(Cell startCell) {
         ArrayList<Direction> dirs = new ArrayList<>();
-        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, LEFT}));
+        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, DOWN, RIGHT}));
 
         Player player = Player.newInstance(startCell);
 
