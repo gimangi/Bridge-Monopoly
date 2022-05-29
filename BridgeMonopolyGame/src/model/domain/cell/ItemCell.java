@@ -1,15 +1,19 @@
 package model.domain.cell;
 
+import model.data.Direction;
+import model.data.RelativePosition;
+
 public class ItemCell extends Cell {
 
-    private ItemType item;
+    private ItemType mItemType;
 
-    public ItemCell(ItemType item) {
-        this.item = item;
+    public ItemCell(RelativePosition position, ItemType itemType) {
+        super(position);
+        this.mItemType = itemType;
     }
 
-    public ItemType getItem() {
-        return this.item;
+    public ItemType getItemType() {
+        return this.mItemType;
     }
 
     @Override
@@ -17,7 +21,7 @@ public class ItemCell extends Cell {
         return isAdjacentDir(dir);
     }
 
-    enum ItemType {
+    public enum ItemType {
         START, END,                 // base cell
         EMPTY,                      // empty cell
         HAMMER, SAW, PHILIPS_DRIVER // item cell

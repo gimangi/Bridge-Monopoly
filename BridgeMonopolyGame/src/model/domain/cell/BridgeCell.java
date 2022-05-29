@@ -1,21 +1,22 @@
 package model.domain.cell;
 
-import model.domain.exception.BridgeNotFoundException;
-
-import java.util.ArrayList;
+import model.data.Direction;
+import model.data.RelativePosition;
 
 import static model.domain.cell.BridgeCell.BridgeType.END;
 import static model.domain.cell.BridgeCell.BridgeType.START;
 
 public class BridgeCell extends Cell {
 
-    private final BridgeType bridgeType;
+    private final BridgeType mBridgeType;
 
-    private Cell connectedCell;
+    private Cell mConnectedCell;
 
-    private BridgeCell(BridgeType bridgeType) {
-        this.bridgeType = bridgeType;
+    public BridgeCell(RelativePosition position, BridgeType bridgeType) {
+        super(position);
+        this.mBridgeType = bridgeType;
     }
+    /*
 
     public static BridgeCell startBridge() {
         BridgeCell bridgeCell = new BridgeCell(START);
@@ -40,20 +41,19 @@ public class BridgeCell extends Cell {
         throw new BridgeNotFoundException();
     }
 
+
+     */
+
     @Override
     public boolean isMovableDir(Direction dir) {
-        if (bridgeType == START && dir == Direction.RIGHT)
+        if (mBridgeType == START && dir == Direction.RIGHT)
             return true;
-        if (bridgeType == END && dir == Direction.LEFT)
+        if (mBridgeType == END && dir == Direction.LEFT)
             return true;
         return isAdjacentDir(dir);
     }
 
-    public static void clear() {
-        opened.clear();
-    }
-
-    enum BridgeType {
+    public enum BridgeType {
         START, END
     }
 }
