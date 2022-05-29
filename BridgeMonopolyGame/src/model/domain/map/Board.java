@@ -1,10 +1,13 @@
 package model.domain.map;
 
+import model.data.Direction;
 import model.data.RelativePosition;
 import model.domain.cell.Cell;
+import model.domain.cell.ItemCell;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Board {
 
@@ -13,6 +16,8 @@ public class Board {
 
     private Cell startCell;
 
+    private Cell endCell;
+
     private final ArrayList<Cell> cellList = new ArrayList<>();
 
     /*
@@ -20,6 +25,11 @@ public class Board {
         (0, 0) is the leftmost and bottommost position
      */
     private Cell[][] absoluteMap;
+
+    /*
+        Determines if the current map is going forward.
+     */
+    private Direction forwardDir = Direction.RIGHT;
 
     public Cell getStartCell() {
         return this.startCell;
@@ -53,6 +63,10 @@ public class Board {
                 maxY = y;
             if (y < minY)
                 minY = y;
+
+            // find end cell
+            if (cell instanceof ItemCell && ((ItemCell) cell).getItemType() == ItemCell.ItemType.END)
+                this.endCell = cell;
         }
 
         absoluteMap = new Cell[maxY - minY + 1][maxX - minX + 1];
@@ -62,6 +76,7 @@ public class Board {
             RelativePosition pos = cell.getPosition();
             absoluteMap[pos.getY() - minY][pos.getX() - minX] = cell;
         }
+
     }
 
     public void printAbsoluteMap() {

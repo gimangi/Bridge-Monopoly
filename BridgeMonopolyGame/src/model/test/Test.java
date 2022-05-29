@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static model.data.Direction.*;
+import static model.data.MoveType.ADJACENT;
+import static model.data.MoveType.FORWARD;
 
 public class Test {
     public static void main(String args[]) {
@@ -30,11 +32,11 @@ public class Test {
 
     private static void testMapMove(Cell startCell) {
         ArrayList<Direction> dirs = new ArrayList<>();
-        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, DOWN, RIGHT, RIGHT}));
+        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, LEFT}));
 
         Player player = Player.newInstance(startCell);
 
-        System.out.println(player.move(dirs));
-        System.out.println(player.move(dirs));
+        System.out.println(player.move(dirs, ADJACENT));
+        System.out.println(player.move(dirs, FORWARD));
     }
 }

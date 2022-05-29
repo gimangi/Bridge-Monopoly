@@ -1,6 +1,7 @@
 package model.domain.cell;
 
 import model.data.Direction;
+import model.data.MoveType;
 import model.data.RelativePosition;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,8 +19,12 @@ public class ItemCell extends Cell {
     }
 
     @Override
-    public boolean isMovableDir(Direction dir) {
-        return isAdjacentDir(dir);
+    public boolean isMovableDir(Direction dir, MoveType moveType) {
+        if (moveType == MoveType.ADJACENT)
+            return isAdjacentDir(dir);
+        // forward move
+        else
+            return isForwardDir(dir);
     }
 
     @Override

@@ -121,7 +121,9 @@ public class MapDecoder {
 
         if (prevCell != null) {
             // Link path from previous cell to current cell
-            prevCell.putAdjacentCell(getDirection(prevOps[prevOps.length - 1]), res);
+            Direction dir = getDirection(prevOps[prevOps.length - 1]);
+            prevCell.putAdjacentCell(dir, res);
+            prevCell.putForwardCell(dir, res);
 
             // Link path from current cell to previous cell
             if (curOps.length == 3) {

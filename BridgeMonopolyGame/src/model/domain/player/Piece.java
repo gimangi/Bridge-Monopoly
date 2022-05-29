@@ -1,6 +1,7 @@
 package model.domain.player;
 
 import model.data.Direction;
+import model.data.MoveType;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import org.jetbrains.annotations.NotNull;
@@ -15,11 +16,11 @@ public class Piece {
         this.curCell = startCell;
     }
 
-    public boolean move(@NotNull final ArrayList<Direction> dir) {
+    public boolean move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
         Cell cur = curCell;
 
         for (int i = 0; i < dir.size(); i++) {
-            if (cur.isMovableDir(dir.get(i))) {
+            if (cur.isMovableDir(dir.get(i), moveType)) {
                 Cell dest = cur.getAdjacentCell(dir.get(i));
 
                 if (cur instanceof BridgeCell && dest instanceof BridgeCell) {

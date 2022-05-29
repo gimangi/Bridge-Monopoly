@@ -1,6 +1,7 @@
 package model.domain.cell;
 
 import model.data.Direction;
+import model.data.MoveType;
 import model.data.RelativePosition;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,41 +19,21 @@ public class BridgeCell extends Cell {
         this.bridgeType = bridgeType;
     }
 
-    /*
-
-    public static BridgeCell startBridge() {
-        BridgeCell bridgeCell = new BridgeCell(START);
-        opened.add(bridgeCell);
-        return bridgeCell;
-    }
-
-    public static BridgeCell endBridge() throws BridgeNotFoundException {
-        BridgeCell bridgeCell = new BridgeCell(END);
-
-        for (BridgeCell c : opened) {
-            if (c.bridgeType == START && c.position.getY() == bridgeCell.position.getY()) {
-                // link bridge cell
-                c.connectedCell = bridgeCell;
-                bridgeCell.connectedCell = c;
-
-                opened.remove(c);
-                return bridgeCell;
-            }
-        }
-
-        throw new BridgeNotFoundException();
-    }
-
-
-     */
-
     @Override
-    public boolean isMovableDir(Direction dir) {
-        if (bridgeType == START && dir == Direction.RIGHT)
-            return true;
-        if (bridgeType == END && dir == Direction.LEFT)
-            return true;
-        return isAdjacentDir(dir);
+    public boolean isMovableDir(Direction dir, MoveType moveType) {
+        if (moveType == MoveType.ADJACENT) {
+            if (bridgeType == START && dir == Direction.RIGHT)
+                return true;
+            if (bridgeType == END && dir == Direction.LEFT)
+                return true;
+            return isAdjacentDir(dir);
+        }
+        // forward move
+        else {
+            if (bridgeType == START && dir == Direction.RIGHT)
+                return true;
+            return isForwardDir(dir);
+        }
     }
 
     @Override

@@ -1,39 +1,66 @@
 package model.domain.rule;
 
+import model.data.Direction;
+import model.domain.map.Board;
 import model.domain.map.MapDecoder;
+import model.domain.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class BridgeMonopolyGame {
 
     private @Nullable MapDecoder mapDecoder;
 
+    private Board board;
+
+    private int numOfPlayers;
+
+    private Turn turn;
+
 
     /*
         Decide whether to use the default map.
      */
-    protected abstract boolean useDefaultMap();
+    protected abstract boolean selectUseDefaultMap();
     /*
         Select map file name.
      */
-    protected abstract String selectMapFile();
+    protected abstract String enterMapFile();
 
     /*
         It outputs that the input file does not exist and proceeds to the default map.
      */
-    protected abstract String displayNotFoundMap();
+    protected abstract void displayNotFoundMap();
 
-    private void loadMap() {
+    /*
+        Input the number of players to play the game.
+     */
+    protected abstract int enterNumberOfPlayers();
 
-    }
+    /*
+        The player chooses whether to rest or roll the dice for that turn.
+     */
+    protected abstract boolean selectStay(int playerId);
+
+    /*
+        The dice are rolled based on the player's input.
+     */
+    protected abstract int rollDice();
+
+    /*
+        Displays the result of the dice and receives the input direction to move.
+     */
+    protected abstract @NotNull ArrayList<Direction> enterDirection(int diceResult);
 
     public void run() {
 
         while (mapDecoder == null) {
             try {
-                if (useDefaultMap())
-                    mapDecoder = new MapDecoder(selectMapFile());
+                if (selectUseDefaultMap())
+                    mapDecoder = new MapDecoder(enterMapFile());
                 else
                     mapDecoder = new MapDecoder();
 
@@ -42,7 +69,55 @@ public abstract class BridgeMonopolyGame {
             }
         }
 
-        
+        // create map by absolute position
+        board.createAbsoluteMap();
+
+        // initialize players
+        Player.clear();
+        numOfPlayers = enterNumberOfPlayers();
+        ArrayList<Player> playerList = new ArrayList<>();
+        for (int i = 0; i < numOfPlayers; i++) {
+            playerList.add(Player.newInstance(board.getStartCell()));
+        }
+
+        // initialize turn
+        turn = new Turn(playerList);
+
+        // run turn
+        Player owner;
+        while ((owner = turn.getTurnOwner()) != null) {
+            boolean stay = selectStay(owner.getId());
+
+            // stay turn
+            if (stay) {
+                owner.addPenalty(-1);
+            }
+            // move turn
+            else {
+                // roll dice
+                int diceResult = rollDice();
+                // combine direction
+                ArrayList<Direction> dirs;
+
+                while (true) {
+                    dirs = enterDirection(diceResult);
+
+                    // not allow move back
+                    if (!turn.getAllowMoveBack()) {
+
+                    }
+
+                    // invalid move
+                    //if (owner.move)
+
+                }
+
+
+
+            }
+
+            turn.proceedTurn();
+        }
 
     }
 

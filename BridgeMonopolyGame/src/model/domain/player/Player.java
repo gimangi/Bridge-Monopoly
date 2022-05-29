@@ -1,6 +1,7 @@
 package model.domain.player;
 
 import model.data.Direction;
+import model.data.MoveType;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,8 @@ public class Player {
     private final int id;
 
     private int point = 0;
+
+    private int penalty = 0;
 
     private final Piece piece;
 
@@ -37,8 +40,8 @@ public class Player {
         return this.id;
     }
 
-    public boolean move(@NotNull final ArrayList<Direction> dir) {
-        boolean res =  piece.move(dir);
+    public boolean move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
+        boolean res =  piece.move(dir, moveType);
 
         // moved
         if (res) {
@@ -52,6 +55,22 @@ public class Player {
 
     public boolean isEnd() {
         return this.isEnd;
+    }
+
+    public void addPoint(int value) {
+        this.point += value;
+    }
+
+    public int getPoint() {
+        return this.point;
+    }
+
+    public void addPenalty(int value) {
+        this.penalty += value;
+    }
+
+    public int getPenalty() {
+        return this.penalty;
     }
 
 }

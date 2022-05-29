@@ -1,6 +1,7 @@
 package model.domain.cell;
 
 import model.data.Direction;
+import model.data.MoveType;
 import model.data.RelativePosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,6 +13,10 @@ public abstract class Cell {
 
     protected final RelativePosition position;
 
+    // Cells connected in the forward direction
+    protected final HashMap<Direction, Cell> forwardSet = new HashMap<>();
+
+    // Cells connected in the backward direction
     protected final HashMap<Direction, Cell> adjacentSet = new HashMap();
 
     protected Cell(RelativePosition position) {
@@ -22,19 +27,24 @@ public abstract class Cell {
         return this.adjacentSet.get(dir) != null;
     }
 
-    public abstract boolean isMovableDir(Direction dir);
+    protected boolean isForwardDir(Direction dir) {
+        return this.forwardSet.get(dir) != null;
+    }
+
+    public abstract boolean isMovableDir(Direction dir, MoveType moveType);
 
     public abstract Cell getAdjacentCell(Direction dir);
-
-    public HashMap<Direction, Cell> getAdjacentSet() {
-        return this.adjacentSet;
-    }
 
     public void putAdjacentCell(Direction dir, Cell cell) {
         this.adjacentSet.put(dir, cell);
     }
 
+    public void putForwardCell(Direction dir, Cell cell) {
+        this.forwardSet.put(dir, cell);
+    }
+
     public RelativePosition getPosition() {
         return this.position;
     }
+
 }
