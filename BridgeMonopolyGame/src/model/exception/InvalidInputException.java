@@ -1,4 +1,4 @@
-package model.domain.exception;
+package model.exception;
 
 public class InvalidInputException extends Exception {
 

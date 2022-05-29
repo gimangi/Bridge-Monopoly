@@ -5,8 +5,8 @@ import model.data.RelativePosition;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
-import model.domain.exception.BridgeNotFoundException;
-import model.domain.exception.InvalidInputException;
+import model.exception.BridgeNotFoundException;
+import model.exception.InvalidInputException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;

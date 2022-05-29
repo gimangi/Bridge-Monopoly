@@ -1,4 +1,4 @@
-package model.domain.test;
+package model.test;
 
 import model.data.Direction;
 import model.domain.cell.Cell;
