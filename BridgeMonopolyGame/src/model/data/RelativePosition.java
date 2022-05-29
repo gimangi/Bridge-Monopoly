@@ -1,20 +1,40 @@
 package model.data;
 
 public class RelativePosition {
-    private int x;
-    private int y;
+    private final int mPosX;
+    private final int mPosY;
 
-    public RelativePosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public RelativePosition(final int x, final int y) {
+        this.mPosX = x;
+        this.mPosY = y;
     }
 
     public int getX() {
-        return this.x;
+        return this.mPosX;
     }
 
     public int getY() {
-        return this.y;
+        return this.mPosY;
+    }
+
+    public RelativePosition getMovedPosition(Direction dir) {
+        int x = this.mPosX;
+        int y = this.mPosY;
+
+        switch (dir) {
+            case LEFT:
+                x--;
+                break;
+            case RIGHT:
+                x++;
+                break;
+            case UP:
+                y++;
+                break;
+            case DOWN:
+                y--;
+        }
+        return new RelativePosition(x, y);
     }
 
 }
