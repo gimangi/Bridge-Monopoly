@@ -11,37 +11,37 @@ public class Board {
     private final static int POS_INF = 23456789;
     private final static int NEG_INF = -23456789;
 
-    private Cell mStartCell;
+    private Cell startCell;
 
-    private final ArrayList<Cell> mCellList = new ArrayList<>();
+    private final ArrayList<Cell> cellList = new ArrayList<>();
 
     /*
         Used when displaying in gui and cli
         (0, 0) is the leftmost and bottommost position
      */
-    private Cell[][] mAbsoluteMap;
+    private Cell[][] absoluteMap;
 
     public Cell getStartCell() {
-        return this.mStartCell;
+        return this.startCell;
     }
 
     public void setStartCell(Cell cell) {
-        this.mStartCell = cell;
+        this.startCell = cell;
     }
 
     public void putCellList(@NotNull ArrayList<Cell> list) {
-        this.mCellList.addAll(list);
+        this.cellList.addAll(list);
     }
 
     public void createAbsoluteMap() {
-        if (mCellList.isEmpty())
+        if (cellList.isEmpty())
             return;
 
         int minX = POS_INF, minY = POS_INF;
         int maxX = NEG_INF, maxY = NEG_INF;
 
         // get arrange of relative position
-        for (Cell cell : mCellList) {
+        for (Cell cell : cellList) {
             int x = cell.getPosition().getX();
             int y = cell.getPosition().getY();
 
@@ -55,22 +55,22 @@ public class Board {
                 minY = y;
         }
 
-        mAbsoluteMap = new Cell[maxY - minY + 1][maxX - minX + 1];
+        absoluteMap = new Cell[maxY - minY + 1][maxX - minX + 1];
 
         // load to absolute map
-        for (Cell cell : mCellList) {
+        for (Cell cell : cellList) {
             RelativePosition pos = cell.getPosition();
-            mAbsoluteMap[pos.getY() - minY][pos.getX() - minX] = cell;
+            absoluteMap[pos.getY() - minY][pos.getX() - minX] = cell;
         }
     }
 
     public void printAbsoluteMap() {
-        if (mAbsoluteMap == null)
+        if (absoluteMap == null)
             return;
 
-        for (int i = mAbsoluteMap.length - 1; i >= 0; i--) {
-            for (int j = 0; j < mAbsoluteMap[i].length; j++) {
-                if (mAbsoluteMap[i][j] == null)
+        for (int i = absoluteMap.length - 1; i >= 0; i--) {
+            for (int j = 0; j < absoluteMap[i].length; j++) {
+                if (absoluteMap[i][j] == null)
                     System.out.print("X");
                 else
                     System.out.print("O");

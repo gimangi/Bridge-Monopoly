@@ -6,15 +6,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class ItemCell extends Cell {
 
-    private ItemType mItemType;
+    private ItemType itemType;
 
     public ItemCell(RelativePosition position, ItemType itemType) {
         super(position);
-        this.mItemType = itemType;
+        this.itemType = itemType;
     }
 
     public ItemType getItemType() {
-        return this.mItemType;
+        return this.itemType;
     }
 
     @Override
@@ -22,10 +22,9 @@ public class ItemCell extends Cell {
         return isAdjacentDir(dir);
     }
 
-    @Nullable
     @Override
-    public Cell getAdjacentCell(Direction dir) {
-        return this.mAdjacentSet.get(dir);
+    public @Nullable Cell getAdjacentCell(Direction dir) {
+        return this.adjacentSet.get(dir);
     }
 
     public enum ItemType {

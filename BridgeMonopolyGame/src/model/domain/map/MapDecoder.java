@@ -22,25 +22,25 @@ public class MapDecoder {
 
     private final static String DEFAULT_FILE = "default.map";
 
-    private final String mFileName;
+    private final String fileName;
 
-    private final BufferedReader mReader;
+    private final BufferedReader reader;
 
-    private final Board mBoard = new Board();
+    private final Board board = new Board();
 
     // relative position to the start cell
-    private RelativePosition mCurPos = new RelativePosition(0, 0);
+    private RelativePosition curPos = new RelativePosition(0, 0);
 
     // bridge start cell not yet connected to end
-    private final HashMap<Integer, BridgeCell> mOpenedBridge = new HashMap<>();
+    private final HashMap<Integer, BridgeCell> openedBridge = new HashMap<>();
 
     public MapDecoder() throws IOException {
         this(DEFAULT_FILE);
     }
 
     public MapDecoder(final String fileName) throws IOException {
-        this.mFileName = fileName;
-        mReader = new BufferedReader(new FileReader("." + File.separator + DIR_MAPS + File.separator + fileName));
+        this.fileName = fileName;
+        reader = new BufferedReader(new FileReader("." + File.separator + DIR_MAPS + File.separator + fileName));
 
         int lineNum = 1;
         String curLine = "";
@@ -50,7 +50,7 @@ public class MapDecoder {
 
         try {
             // read all line
-            while ((curLine = mReader.readLine()) != null) {
+            while ((curLine = reader.readLine()) != null) {
                 Cell cell = newCell(curLine, prevLine, prevCell);
                 cellList.add(cell);
                 prevLine = curLine;
@@ -58,7 +58,7 @@ public class MapDecoder {
 
                 lineNum++;
             }
-            this.mBoard.putCellList(cellList);
+            this.board.putCellList(cellList);
 
         } catch (InvalidInputException e) {
             System.out.println("Invalid input : " + e.getLine());
@@ -68,7 +68,7 @@ public class MapDecoder {
     }
 
     public Board getBoard() {
-        return this.mBoard;
+        return this.board;
     }
 
 
@@ -80,40 +80,40 @@ public class MapDecoder {
         switch (curOps[0]) {
             case "S":
                 if (curOps.length == 2) {
-                    res = new ItemCell(mCurPos, ItemCell.ItemType.START);
-                    this.mBoard.setStartCell(res);
+                    res = new ItemCell(curPos, ItemCell.ItemType.START);
+                    this.board.setStartCell(res);
                 }
                 else
-                    res = new ItemCell(mCurPos, ItemCell.ItemType.SAW);
+                    res = new ItemCell(curPos, ItemCell.ItemType.SAW);
                 break;
             case "C":
-                res = new ItemCell(mCurPos, ItemCell.ItemType.EMPTY);
+                res = new ItemCell(curPos, ItemCell.ItemType.EMPTY);
                 break;
             case "H":
-                res = new ItemCell(mCurPos, ItemCell.ItemType.HAMMER);
+                res = new ItemCell(curPos, ItemCell.ItemType.HAMMER);
                 break;
             case "P":
-                res = new ItemCell(mCurPos, ItemCell.ItemType.PHILIPS_DRIVER);
+                res = new ItemCell(curPos, ItemCell.ItemType.PHILIPS_DRIVER);
                 break;
             case "E":
-                res = new ItemCell(mCurPos, ItemCell.ItemType.END);
+                res = new ItemCell(curPos, ItemCell.ItemType.END);
                 break;
             case "B":
-                res = new BridgeCell(mCurPos, BridgeCell.BridgeType.START);
-                mOpenedBridge.put(mCurPos.getY(), (BridgeCell) res);
+                res = new BridgeCell(curPos, BridgeCell.BridgeType.START);
+                openedBridge.put(curPos.getY(), (BridgeCell) res);
                 break;
             case "b":
-                res = new BridgeCell(mCurPos, BridgeCell.BridgeType.END);
+                res = new BridgeCell(curPos, BridgeCell.BridgeType.END);
 
                 // link connect cell
-                BridgeCell pairCell = mOpenedBridge.get(mCurPos.getY());
+                BridgeCell pairCell = openedBridge.get(curPos.getY());
                 if (pairCell == null)
                     throw new BridgeNotFoundException();
                 pairCell.setConnectedCell(res);
                 ((BridgeCell) res).setConnectedCell(pairCell);
 
                 // close bridge cell
-                mOpenedBridge.remove(mCurPos.getY());
+                openedBridge.remove(curPos.getY());
                 break;
             default:
                 throw new InvalidInputException(curLine);
@@ -132,7 +132,7 @@ public class MapDecoder {
 
         // Change next relative position
         if (curOps.length > 1) {
-            mCurPos = mCurPos.getMovedPosition(getDirection(curOps[curOps.length - 1]));
+            curPos = curPos.getMovedPosition(getDirection(curOps[curOps.length - 1]));
         }
 
         return res;

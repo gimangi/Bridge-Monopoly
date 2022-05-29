@@ -4,6 +4,12 @@ import model.data.Direction;
 import model.domain.cell.Cell;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
+import model.domain.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static model.data.Direction.*;
 
 public class Test {
     public static void main(String args[]) {
@@ -23,12 +29,12 @@ public class Test {
     }
 
     private static void testMapMove(Cell startCell) {
-        System.out.println(
-                startCell.getAdjacentCell(Direction.RIGHT)
-                        .getAdjacentCell(Direction.RIGHT)
-                        .getAdjacentCell(Direction.DOWN)
-                        .getAdjacentCell(Direction.RIGHT)
-                        .getPosition()
-        );
+        ArrayList<Direction> dirs = new ArrayList<>();
+        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, DOWN, RIGHT, RIGHT}));
+
+        Player player = Player.newInstance(startCell);
+
+        System.out.println(player.getPiece().move(dirs));
+        System.out.println(player.getPiece().move(dirs));
     }
 }

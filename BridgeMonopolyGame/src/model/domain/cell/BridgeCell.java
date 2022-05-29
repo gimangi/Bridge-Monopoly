@@ -9,13 +9,13 @@ import static model.domain.cell.BridgeCell.BridgeType.START;
 
 public class BridgeCell extends Cell {
 
-    private final BridgeType mBridgeType;
+    private final BridgeType bridgeType;
 
-    private Cell mConnectedCell;
+    private Cell connectedCell;
 
     public BridgeCell(RelativePosition position, BridgeType bridgeType) {
         super(position);
-        this.mBridgeType = bridgeType;
+        this.bridgeType = bridgeType;
     }
 
     /*
@@ -48,24 +48,23 @@ public class BridgeCell extends Cell {
 
     @Override
     public boolean isMovableDir(Direction dir) {
-        if (mBridgeType == START && dir == Direction.RIGHT)
+        if (bridgeType == START && dir == Direction.RIGHT)
             return true;
-        if (mBridgeType == END && dir == Direction.LEFT)
+        if (bridgeType == END && dir == Direction.LEFT)
             return true;
         return isAdjacentDir(dir);
     }
 
     @Override
-    @Nullable
-    public Cell getAdjacentCell(Direction dir) {
-        if (this.mBridgeType == START && dir == Direction.RIGHT || this.mBridgeType == END && dir == Direction.LEFT) {
-            return mConnectedCell;
+    public @Nullable Cell getAdjacentCell(Direction dir) {
+        if (this.bridgeType == START && dir == Direction.RIGHT || this.bridgeType == END && dir == Direction.LEFT) {
+            return connectedCell;
         }
-        return this.mAdjacentSet.get(dir);
+        return this.adjacentSet.get(dir);
     }
 
     public void setConnectedCell(Cell cell) {
-        this.mConnectedCell = cell;
+        this.connectedCell = cell;
     }
 
     public enum BridgeType {
