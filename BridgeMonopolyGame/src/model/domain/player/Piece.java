@@ -40,4 +40,7 @@ public class Piece {
         return true;
     }
 
+    public Cell getCurCell() {
+        return curCell;
+    }
 }

@@ -1,7 +1,11 @@
 package model.domain.player;
 
+import model.data.Direction;
 import model.domain.cell.Cell;
+import model.domain.cell.ItemCell;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class Player {
 
@@ -33,10 +37,18 @@ public class Player {
         return this.id;
     }
 
-    public Piece getPiece() {
-        return this.piece;
-    }
+    public boolean move(@NotNull final ArrayList<Direction> dir) {
+        boolean res =  piece.move(dir);
 
+        // moved
+        if (res) {
+            Cell curCell = piece.getCurCell();
+            if (curCell instanceof ItemCell && ((ItemCell) curCell).getItemType() == ItemCell.ItemType.END)
+                this.isEnd = true;
+        }
+
+        return res;
+    }
 
     public boolean isEnd() {
         return this.isEnd;

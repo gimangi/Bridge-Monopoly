@@ -34,7 +34,7 @@ public class Test {
 
         Player player = Player.newInstance(startCell);
 
-        System.out.println(player.getPiece().move(dirs));
-        System.out.println(player.getPiece().move(dirs));
+        System.out.println(player.move(dirs));
+        System.out.println(player.move(dirs));
     }
 }
