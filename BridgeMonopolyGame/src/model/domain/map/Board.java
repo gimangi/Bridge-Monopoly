@@ -11,4 +11,8 @@ public class Board {
     public Cell getStartCell() {
         return this.mStartCell;
     }
+
+    public void setStartCell(Cell cell) {
+        this.mStartCell = cell;
+    }
 }

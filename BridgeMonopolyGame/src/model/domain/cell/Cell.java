@@ -21,11 +21,17 @@ public abstract class Cell {
 
     public abstract boolean isMovableDir(Direction dir);
 
-    public HashMap<Direction, Cell> getAdjacentCell() {
+    public abstract Cell getAdjacentCell(Direction dir);
+
+    public HashMap<Direction, Cell> getAdjacentSet() {
         return this.mAdjacentSet;
     }
 
     public void putAdjacentCell(Direction dir, Cell cell) {
         this.mAdjacentSet.put(dir, cell);
+    }
+
+    public RelativePosition getPosition() {
+        return this.mPosition;
     }
 }

@@ -37,4 +37,9 @@ public class RelativePosition {
         return new RelativePosition(x, y);
     }
 
+    @Override
+    public String toString() {
+        return "(" + this.mPosX + ", " + this.mPosY + ")";
+    }
+
 }

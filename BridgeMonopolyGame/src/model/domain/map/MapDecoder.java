@@ -5,6 +5,7 @@ import model.data.RelativePosition;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
+import model.domain.exception.BridgeNotFoundException;
 import model.domain.exception.InvalidInputException;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class MapDecoder {
 
@@ -28,30 +30,36 @@ public class MapDecoder {
     // relative position to the start cell
     private RelativePosition mCurPos = new RelativePosition(0, 0);
 
+    // bridge start cell not yet connected to end
+    private final HashMap<Integer, BridgeCell> mOpenedBridge = new HashMap<>();
+
     public MapDecoder() throws IOException {
         this(DEFAULT_FILE);
     }
 
     public MapDecoder(final String fileName) throws IOException {
-        this.mFileName = "." + File.separator + DIR_MAPS + File.separator + fileName;
-        System.out.println(new File("./").getAbsolutePath());
-        System.out.println(new File(mFileName).getAbsolutePath());
-        mReader = new BufferedReader(new FileReader(fileName));
+        this.mFileName = fileName;
+        mReader = new BufferedReader(new FileReader("." + File.separator + DIR_MAPS + File.separator + fileName));
 
+        int lineNum = 1;
         String curLine = "";
         String prevLine = "";
         Cell prevCell = null;
 
         try {
+            // read all line
             while ((curLine = mReader.readLine()) != null) {
-
-
                 Cell cell = newCell(curLine, prevLine, prevCell);
                 prevLine = curLine;
                 prevCell = cell;
+
+                lineNum++;
             }
+
         } catch (InvalidInputException e) {
             System.out.println("Invalid input : " + e.getLine());
+        } catch (BridgeNotFoundException e) {
+            System.out.println("The bridge cell to connect to does not exist in line " + lineNum + " : " + curLine);
         }
     }
 
@@ -60,15 +68,17 @@ public class MapDecoder {
     }
 
 
-    private Cell newCell(String curLine, String prevLine, @Nullable Cell prevCell) throws InvalidInputException {
+    private Cell newCell(String curLine, String prevLine, @Nullable Cell prevCell) throws InvalidInputException, BridgeNotFoundException {
         Cell res;
         String[] curOps = curLine.split(" ");
         String[] prevOps = prevLine.split(" ");
 
         switch (curOps[0]) {
             case "S":
-                if (curOps.length == 2)
+                if (curOps.length == 2) {
                     res = new ItemCell(mCurPos, ItemCell.ItemType.START);
+                    this.mBoard.setStartCell(res);
+                }
                 else
                     res = new ItemCell(mCurPos, ItemCell.ItemType.SAW);
                 break;
@@ -86,9 +96,20 @@ public class MapDecoder {
                 break;
             case "B":
                 res = new BridgeCell(mCurPos, BridgeCell.BridgeType.START);
+                mOpenedBridge.put(mCurPos.getY(), (BridgeCell) res);
                 break;
             case "b":
                 res = new BridgeCell(mCurPos, BridgeCell.BridgeType.END);
+
+                // link connect cell
+                BridgeCell pairCell = mOpenedBridge.get(mCurPos.getY());
+                if (pairCell == null)
+                    throw new BridgeNotFoundException();
+                pairCell.setConnectedCell(res);
+                ((BridgeCell) res).setConnectedCell(pairCell);
+
+                // close bridge cell
+                mOpenedBridge.remove(mCurPos.getY());
                 break;
             default:
                 throw new InvalidInputException(curLine);
@@ -107,7 +128,7 @@ public class MapDecoder {
 
         // Change next relative position
         if (curOps.length > 1) {
-            mCurPos.getMovedPosition(getDirection(curOps[curOps.length - 1]));
+            mCurPos = mCurPos.getMovedPosition(getDirection(curOps[curOps.length - 1]));
         }
 
         return res;

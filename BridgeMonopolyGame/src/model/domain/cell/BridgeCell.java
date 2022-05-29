@@ -2,6 +2,7 @@ package model.domain.cell;
 
 import model.data.Direction;
 import model.data.RelativePosition;
+import org.jetbrains.annotations.Nullable;
 
 import static model.domain.cell.BridgeCell.BridgeType.END;
 import static model.domain.cell.BridgeCell.BridgeType.START;
@@ -16,6 +17,7 @@ public class BridgeCell extends Cell {
         super(position);
         this.mBridgeType = bridgeType;
     }
+
     /*
 
     public static BridgeCell startBridge() {
@@ -51,6 +53,19 @@ public class BridgeCell extends Cell {
         if (mBridgeType == END && dir == Direction.LEFT)
             return true;
         return isAdjacentDir(dir);
+    }
+
+    @Override
+    @Nullable
+    public Cell getAdjacentCell(Direction dir) {
+        if (this.mBridgeType == START && dir == Direction.RIGHT || this.mBridgeType == END && dir == Direction.LEFT) {
+            return mConnectedCell;
+        }
+        return this.mAdjacentSet.get(dir);
+    }
+
+    public void setConnectedCell(Cell cell) {
+        this.mConnectedCell = cell;
     }
 
     public enum BridgeType {
