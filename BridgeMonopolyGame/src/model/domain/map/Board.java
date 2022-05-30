@@ -16,8 +16,6 @@ public class Board {
 
     private Cell startCell;
 
-    private Cell endCell;
-
     private final ArrayList<Cell> cellList = new ArrayList<>();
 
     /*
@@ -58,10 +56,6 @@ public class Board {
                 maxY = y;
             if (y < minY)
                 minY = y;
-
-            // find end cell
-            if (cell instanceof ItemCell && ((ItemCell) cell).getItemType() == ItemCell.ItemType.END)
-                this.endCell = cell;
         }
 
         absoluteMap = new Cell[maxY - minY + 1][maxX - minX + 1];
@@ -69,16 +63,20 @@ public class Board {
         // load to absolute map
         for (Cell cell : cellList) {
             RelativePosition pos = cell.getPosition();
-            absoluteMap[pos.getY() - minY][pos.getX() - minX] = cell;
+            absoluteMap[maxY - pos.getY()][pos.getX() - minX] = cell;
         }
 
+    }
+
+    public Cell[][] getAbsoluteMap() {
+        return this.absoluteMap;
     }
 
     public void printAbsoluteMap() {
         if (absoluteMap == null)
             return;
 
-        for (int i = absoluteMap.length - 1; i >= 0; i--) {
+        for (int i = 0; i < absoluteMap.length; i++) {
             for (int j = 0; j < absoluteMap[i].length; j++) {
                 if (absoluteMap[i][j] == null)
                     System.out.print("X");

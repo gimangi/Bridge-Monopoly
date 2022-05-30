@@ -48,6 +48,10 @@ public class BridgeCell extends Cell {
         this.connectedCell = cell;
     }
 
+    public BridgeType getBridgeType() {
+        return this.bridgeType;
+    }
+
     public enum BridgeType {
         START, END
     }

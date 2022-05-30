@@ -1,4 +1,4 @@
-package model.test;
+package test;
 
 import model.data.Direction;
 import model.domain.cell.Cell;
@@ -13,7 +13,7 @@ import static model.data.Direction.*;
 import static model.data.MoveType.ADJACENT;
 import static model.data.MoveType.FORWARD;
 
-public class Test {
+public class DomainTest {
     public static void main(String args[]) {
         try {
             MapDecoder decoder = new MapDecoder();
@@ -32,7 +32,7 @@ public class Test {
 
     private static void testMapMove(Cell startCell) {
         ArrayList<Direction> dirs = new ArrayList<>();
-        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, DOWN, RIGHT}));
+        dirs.addAll(List.of(new Direction[]{RIGHT, RIGHT, DOWN, RIGHT, RIGHT}));
 
         Player player = Player.newInstance(startCell);
 

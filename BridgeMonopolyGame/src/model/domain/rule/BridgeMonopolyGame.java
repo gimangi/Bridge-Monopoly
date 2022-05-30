@@ -16,11 +16,11 @@ public abstract class BridgeMonopolyGame {
 
     private @Nullable MapDecoder mapDecoder;
 
-    private Board board;
+    protected Board board;
 
     private int numOfPlayers;
 
-    private Turn turn;
+    protected Turn turn;
 
 
     /*
@@ -41,6 +41,14 @@ public abstract class BridgeMonopolyGame {
         Input the number of players to play the game.
      */
     protected abstract int enterNumberOfPlayers();
+
+
+    /*
+        Initializes the elements of the screen.
+     */
+    protected abstract void initDisplay();
+
+    protected abstract void refresh();
 
     /*
         The player chooses whether to rest or roll the dice for that turn.
@@ -63,11 +71,6 @@ public abstract class BridgeMonopolyGame {
     protected abstract void alertInvalidMove();
 
     /*
-        Show turn changes
-     */
-    protected abstract void displayResult();
-
-    /*
         Display the winner
      */
     protected abstract void displayWinner();
@@ -81,6 +84,7 @@ public abstract class BridgeMonopolyGame {
                 else
                     mapDecoder = new MapDecoder();
 
+                board = mapDecoder.getBoard();
             } catch (IOException e) {
                 displayNotFoundMap();
             }
@@ -99,6 +103,8 @@ public abstract class BridgeMonopolyGame {
 
         // initialize turn
         turn = new Turn(playerList);
+
+        initDisplay();
 
         // run turn
         Player owner;
@@ -139,7 +145,7 @@ public abstract class BridgeMonopolyGame {
                 }
 
             }
-            displayResult();
+            refresh();
             turn.proceedTurn();
         }
         displayWinner();
