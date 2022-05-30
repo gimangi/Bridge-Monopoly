@@ -9,30 +9,25 @@ public class MapView extends JPanel {
 
     private final Cell[][] map;
 
-    private final GridLayout layout;
+    private final GridBagLayout layout;
 
     public MapView(final Cell[][] map) {
         this.map = map;
 
-        int row = map.length;
-        int col = map[0].length;
-
-        layout = new GridLayout(row, col);
-        layout.setHgap(0);
-        layout.setVgap(0);
-
+        layout = new GridBagLayout();
         setLayout(layout);
 
-        display();
+        addCell();
     }
 
-    private void display() {
+    private void addCell() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 CellView cellView = new CellView(map[i][j]);
-                add(cellView);
-                System.out.println(cellView);
-
+                GridBagConstraints constraints = new GridBagConstraints();
+                constraints.gridx = j;
+                constraints.gridy = i;
+                add(cellView, constraints);
             }
         }
         revalidate();

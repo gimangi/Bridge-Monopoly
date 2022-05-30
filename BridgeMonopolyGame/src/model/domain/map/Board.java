@@ -2,8 +2,10 @@ package model.domain.map;
 
 import model.data.Direction;
 import model.data.RelativePosition;
+import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
+import model.exception.InvalidInputException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -65,6 +67,21 @@ public class Board {
             RelativePosition pos = cell.getPosition();
             absoluteMap[maxY - pos.getY()][pos.getX() - minX] = cell;
         }
+
+        // generate bridge path
+        for (int y = 0; y < absoluteMap.length; y++) {
+            for (int x = 0; x < absoluteMap[y].length; x++) {
+                // bridge path information
+                if (absoluteMap[y][x] instanceof BridgeCell && ((BridgeCell) absoluteMap[y][x]).getBridgeType() == BridgeCell.BridgeType.START) {
+                    int lookX = x + 1;
+                    while (lookX < absoluteMap[y].length && absoluteMap[y][lookX] == null) {
+                        absoluteMap[y][lookX] = new BridgeCell(null, BridgeCell.BridgeType.BRIDGE);
+                        lookX++;
+                    }
+                }
+            }
+        }
+
 
     }
 

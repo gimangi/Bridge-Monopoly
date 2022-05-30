@@ -59,6 +59,9 @@ public class CellView extends JLabel {
                     break;
                 case END:
                     resource = IC_CELL_EMPTY;
+                    break;
+                case BRIDGE:
+                    resource = IC_BRIDGE;
             }
         }
 

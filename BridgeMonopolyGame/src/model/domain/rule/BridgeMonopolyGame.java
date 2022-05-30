@@ -6,6 +6,7 @@ import model.data.MoveType;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
+import model.exception.InvalidInputException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -53,6 +53,6 @@ public class BridgeCell extends Cell {
     }
 
     public enum BridgeType {
-        START, END
+        START, END, BRIDGE
     }
 }
