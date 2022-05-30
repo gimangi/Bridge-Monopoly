@@ -1,15 +1,10 @@
 package model.domain.map;
 
-import model.data.Direction;
 import model.data.RelativePosition;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
-import model.domain.cell.ItemCell;
-import model.exception.InvalidInputException;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Board {
 
@@ -89,6 +84,7 @@ public class Board {
         return this.absoluteMap;
     }
 
+    // for debug
     public void printAbsoluteMap() {
         if (absoluteMap == null)
             return;

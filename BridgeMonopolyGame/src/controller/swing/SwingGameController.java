@@ -1,15 +1,14 @@
 package controller.swing;
 
 import model.data.Direction;
-import model.domain.cell.Cell;
-import model.domain.cell.ItemCell;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
-import view.swing.CellView;
 import view.swing.MainFrame;
 import view.swing.MapView;
+import view.swing.PlayerContainerView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class SwingGameController extends BridgeMonopolyGame {
@@ -17,6 +16,8 @@ public class SwingGameController extends BridgeMonopolyGame {
     private final MainFrame mainFrame;
 
     private MapView mapView;
+
+    private PlayerContainerView playerView;
 
     public SwingGameController(final MainFrame view) {
         this.mainFrame = view;
@@ -62,7 +63,9 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected void initDisplay() {
         mapView = new MapView(board.getAbsoluteMap());
-        mainFrame.add(mapView);
+        playerView = new PlayerContainerView(turn.getPlayers());
+        mainFrame.add(mapView, BorderLayout.WEST);
+        mainFrame.add(playerView, BorderLayout.SOUTH);
         mainFrame.revalidate();
         mainFrame.repaint();
     }

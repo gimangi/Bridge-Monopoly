@@ -1,6 +1,5 @@
 package view.swing;
 
-import com.sun.tools.javac.Main;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
@@ -8,11 +7,12 @@ import model.domain.cell.ItemCell;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 
 public class CellView extends JLabel {
 
-    public final static int CELL_WIDTH = 40;
-    public final static int CELL_HEIGHT = 40;
+    public final static int CELL_WIDTH = 50;
+    public final static int CELL_HEIGHT = 50;
 
     private final static String DIR_RES = "." + File.separator + "res" + File.separator;
 
@@ -25,6 +25,8 @@ public class CellView extends JLabel {
     private final static String IC_CELL_BRIDGE_START = DIR_RES + "ic_cell_bridge_start.png";
     private final static String IC_BRIDGE = DIR_RES + "ic_bridge.png";
     private final static String IC_EMPTY = DIR_RES + "ic_empty.png";
+
+    private ArrayList<Integer> players = new ArrayList<>();
 
     public CellView(Cell cell) {
         String resource = "";
@@ -70,6 +72,13 @@ public class CellView extends JLabel {
         image = image.getScaledInstance(CELL_WIDTH, CELL_HEIGHT, Image.SCALE_DEFAULT);
         imageIcon.setImage(image);
         setIcon(imageIcon);
-        //setSize(20, 20);
+    }
+
+    public void putPlayer(int playerId) {
+
+    }
+
+    public void removePlayer(int playerId) {
+
     }
 }
