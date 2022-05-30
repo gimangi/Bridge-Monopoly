@@ -1,7 +1,7 @@
 package test;
 
 import controller.swing.SwingGameController;
-import view.swing.MainFrame;
+import view.swing.display.MainFrame;
 
 public class SwingTest {
 

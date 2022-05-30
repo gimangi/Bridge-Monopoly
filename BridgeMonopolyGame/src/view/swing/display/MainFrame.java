@@ -1,4 +1,4 @@
-package view.swing;
+package view.swing.display;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +10,10 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle(TITLE_NAME);
-        setSize(1200, 800);
+        setSize(1200, 1000);
         setResizable(false);
         setVisible(true);
 
-        /*
-        Container c = getContentPane();
-
-        c.revalidate();
-        c.repaint();
-
-         */
 
     }
 

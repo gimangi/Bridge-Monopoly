@@ -1,4 +1,4 @@
-package view.swing;
+package view.swing.display;
 
 import org.jetbrains.annotations.NotNull;
 

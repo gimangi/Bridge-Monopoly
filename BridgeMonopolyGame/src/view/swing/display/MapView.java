@@ -1,4 +1,4 @@
-package view.swing;
+package view.swing.display;
 
 import model.domain.cell.Cell;
 
