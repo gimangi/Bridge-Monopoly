@@ -68,6 +68,8 @@ public class Player {
 
     public void addPenalty(int value) {
         this.penalty += value;
+        if (penalty < 0)
+            penalty = 0;
     }
 
     public int getPenalty() {

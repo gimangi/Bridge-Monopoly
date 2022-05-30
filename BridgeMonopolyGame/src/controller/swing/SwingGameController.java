@@ -3,12 +3,15 @@ package controller.swing;
 import model.data.Direction;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
+import view.swing.control.DiceView;
 import view.swing.display.MainFrame;
 import view.swing.display.MapView;
 import view.swing.display.PlayerContainerView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class SwingGameController extends BridgeMonopolyGame {
@@ -66,8 +69,7 @@ public class SwingGameController extends BridgeMonopolyGame {
         playerContainerView = new PlayerContainerView(turn.getPlayers());
         mainFrame.add(mapView, BorderLayout.WEST);
         mainFrame.add(playerContainerView, BorderLayout.SOUTH);
-        mainFrame.revalidate();
-        mainFrame.repaint();
+        notifyUpdate();
     }
 
     @Override
@@ -83,11 +85,30 @@ public class SwingGameController extends BridgeMonopolyGame {
 
     @Override
     protected int rollDice() {
-        return 0;
+        DiceView diceView = new DiceView();
+        mainFrame.add(diceView, BorderLayout.EAST);
+        notifyUpdate();
+
+        diceView.addPropertyChangeListener(evt -> {
+            synchronized (this) {
+                notifyAll();
+            }
+        });
+
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return diceView.getDiceResult();
     }
 
     @Override
     protected @NotNull ArrayList<Direction> enterDirection(int diceResult, int penalty) {
+        System.out.println(diceResult);
         return null;
     }
 
@@ -99,5 +120,10 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected void displayWinner() {
 
+    }
+
+    private void notifyUpdate() {
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 }
