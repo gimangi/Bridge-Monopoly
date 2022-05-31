@@ -83,7 +83,8 @@ public class SwingGameController extends BridgeMonopolyGame {
 
     @Override
     protected void refresh() {
-
+        playerContainerView.setTurnOwner(turn.getTurnOwner());
+        playerContainerView.updatePlayerStatus(turn.getPlayers());
     }
 
     @Override

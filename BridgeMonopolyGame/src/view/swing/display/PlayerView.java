@@ -10,15 +10,11 @@ public class PlayerView extends JPanel {
 
     private final int playerId;
 
-    private int point = 0;
-
-    private int penalty = 0;
-
     private final JLabel idLabel;
 
-    private final JLabel pointLabel;
+    private final JLabel pointLabel = new JLabel();
 
-    private final JLabel penaltyLabel;
+    private final JLabel penaltyLabel = new JLabel();
 
     public PlayerView(int playerId) {
         this.playerId = playerId;
@@ -28,9 +24,6 @@ public class PlayerView extends JPanel {
 
         JLabel pointText = new JLabel("point");
         JLabel penaltyText = new JLabel("penalty");
-
-        pointLabel = new JLabel("" + point);
-        penaltyLabel = new JLabel("" + penalty);
 
         GridLayout layout = new GridLayout(3, 2);
         layout.setVgap(0);
@@ -62,6 +55,16 @@ public class PlayerView extends JPanel {
 
     public int getPlayerId() {
         return this.playerId;
+    }
+
+    public void setPoint(int point) {
+        pointLabel.setText(""+point);
+        updateUI();
+    }
+
+    public void setPenalty(int penalty) {
+        penaltyLabel.setText(""+penalty);
+        updateUI();
     }
 
 

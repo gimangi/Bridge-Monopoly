@@ -112,6 +112,8 @@ public abstract class BridgeMonopolyGame {
             // run turn
             Player owner;
             while ((owner = turn.getTurnOwner()) != null) {
+                refresh();
+
                 boolean stay = selectStay(owner.getId()).call();
 
                 // stay turn
@@ -148,7 +150,6 @@ public abstract class BridgeMonopolyGame {
                     }
 
                 }
-                refresh();
                 turn.proceedTurn();
             }
             displayWinner();

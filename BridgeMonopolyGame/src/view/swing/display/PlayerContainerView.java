@@ -1,6 +1,7 @@
 package view.swing.display;
 
 import model.domain.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +31,25 @@ public class PlayerContainerView extends JPanel {
 
             if (view.getPlayerId() == player.getId())
                 view.setTurnColor();
+        }
+    }
+
+    public void updatePlayerStatus(@NotNull ArrayList<Player> players) {
+        this.players.clear();
+        for (Player player : players) {
+            this.players.add(player);
+        }
+        updateStatus();
+    }
+
+    private void updateStatus() {
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < playerViews.size(); j++) {
+                if (players.get(i).getId() == playerViews.get(i).getPlayerId()) {
+                    playerViews.get(i).setPoint(players.get(i).getPoint());
+                    playerViews.get(i).setPenalty(players.get(i).getPenalty());
+                }
+            }
         }
     }
 
