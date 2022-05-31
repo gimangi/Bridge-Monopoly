@@ -3,6 +3,7 @@ package controller.swing;
 import model.data.Direction;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
+import view.swing.control.CombDirView;
 import view.swing.control.DiceView;
 import view.swing.control.SelectStayView;
 import view.swing.display.MainFrame;
@@ -83,7 +84,6 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected void refresh() {
 
-
     }
 
     @Override
@@ -134,7 +134,6 @@ public class SwingGameController extends BridgeMonopolyGame {
                 });
 
                 waitResult();
-                System.out.println(result);
                 return result;
             }
         };
@@ -145,8 +144,48 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty) {
 
-        Callable<ArrayList<Direction>> call = () -> {
-            return null;
+        WaitCall<ArrayList<Direction>> call = new WaitCall<ArrayList<Direction>>() {
+            @Override
+            public ArrayList<Direction> call() throws Exception {
+                CombDirView dirView = new CombDirView(diceResult);
+                mainFrame.add(dirView);
+                updateMainFrame();
+
+                dirView.getButton(CombDirView.ButtonType.UP).addActionListener(e -> {
+                    if (dirView.addSelectDir(Direction.UP)) {
+                        mainFrame.remove(dirView);
+                        updateMainFrame();
+                        signalResult(dirView.getSelectedDirs());
+                    }
+                });
+
+                dirView.getButton(CombDirView.ButtonType.DOWN).addActionListener(e -> {
+                    if (dirView.addSelectDir(Direction.DOWN)) {
+                        mainFrame.remove(dirView);
+                        updateMainFrame();
+                        signalResult(dirView.getSelectedDirs());
+                    }
+                });
+
+                dirView.getButton(CombDirView.ButtonType.LEFT).addActionListener(e -> {
+                    if (dirView.addSelectDir(Direction.LEFT)) {
+                        mainFrame.remove(dirView);
+                        updateMainFrame();
+                        signalResult(dirView.getSelectedDirs());
+                    }
+                });
+
+                dirView.getButton(CombDirView.ButtonType.RIGHT).addActionListener(e -> {
+                    if (dirView.addSelectDir(Direction.RIGHT)) {
+                        mainFrame.remove(dirView);
+                        updateMainFrame();
+                        signalResult(dirView.getSelectedDirs());
+                    }
+                });
+
+                waitResult();
+                return result;
+            }
         };
 
         return call;
@@ -154,7 +193,7 @@ public class SwingGameController extends BridgeMonopolyGame {
 
     @Override
     protected void alertInvalidMove() {
-
+        JOptionPane.showMessageDialog(null, "해당 방향으로 이동할 수 없습니다..", "Can not move", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
