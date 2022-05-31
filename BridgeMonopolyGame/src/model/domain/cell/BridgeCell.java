@@ -5,6 +5,7 @@ import model.data.MoveType;
 import model.data.RelativePosition;
 import org.jetbrains.annotations.Nullable;
 
+import static model.data.MoveType.ADJACENT;
 import static model.domain.cell.BridgeCell.BridgeType.END;
 import static model.domain.cell.BridgeCell.BridgeType.START;
 
@@ -21,19 +22,16 @@ public class BridgeCell extends Cell {
 
     @Override
     public boolean isMovableDir(Direction dir, MoveType moveType) {
-        if (moveType == MoveType.ADJACENT) {
-            if (bridgeType == START && dir == Direction.RIGHT)
-                return true;
-            if (bridgeType == END && dir == Direction.LEFT)
-                return true;
-            return isAdjacentDir(dir);
+        switch (moveType) {
+            case ADJACENT:
+                return isAdjacentDir(dir);
+            case FORWARD:
+                return isForwardDir(dir);
+            case BRIDGE:
+                if (bridgeType == START && dir == Direction.RIGHT)
+                    return true;
         }
-        // forward move
-        else {
-            if (bridgeType == START && dir == Direction.RIGHT)
-                return true;
-            return isForwardDir(dir);
-        }
+        return false;
     }
 
     @Override

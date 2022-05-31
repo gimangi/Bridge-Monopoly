@@ -20,6 +20,8 @@ public class ItemCell extends Cell {
 
     @Override
     public boolean isMovableDir(Direction dir, MoveType moveType) {
+        if (itemType == ItemType.END)
+            return true;
         if (moveType == MoveType.ADJACENT)
             return isAdjacentDir(dir);
         // forward move
@@ -29,6 +31,8 @@ public class ItemCell extends Cell {
 
     @Override
     public @Nullable Cell getAdjacentCell(Direction dir) {
+        if (itemType == ItemType.END)
+            return this;
         return this.adjacentSet.get(dir);
     }
 

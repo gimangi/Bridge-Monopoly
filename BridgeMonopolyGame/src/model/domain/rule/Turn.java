@@ -12,8 +12,6 @@ public class Turn {
 
     private boolean allPlayerEnd = false;
 
-    private int turnCount = 0;
-
     private final ArrayList<Player> players;
 
     private Player turnOwner;
@@ -40,18 +38,14 @@ public class Turn {
             return false;
         }
 
-        int idx = players.indexOf(turnOwner);
-        int nextIdx;
+        int nextIdx = players.indexOf(turnOwner);
 
         // not end player
         while (true) {
-            nextIdx = (idx + 1) % players.size();
+            nextIdx = (nextIdx + 1) % players.size();
             if (!players.get(nextIdx).isEnd())
                 break;
         }
-        // count turn
-        if (nextIdx == 0)
-            turnCount++;
         turnOwner = players.get(nextIdx);
         return true;
     }
@@ -68,6 +62,20 @@ public class Turn {
 
     public ArrayList<Player> getPlayers() {
         return this.players;
+    }
+
+    public @NotNull Player getWinner() {
+        int maxScore = -1;
+        Player winner = null;
+
+        for (Player p : players) {
+            if (maxScore < p.getPoint()) {
+                maxScore = p.getPoint();
+                winner = p;
+            }
+        }
+
+        return winner;
     }
 
 }

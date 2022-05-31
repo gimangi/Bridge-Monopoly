@@ -152,12 +152,17 @@ public class SwingGameController extends BridgeMonopolyGame {
     }
 
     @Override
-    protected @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty) {
+    protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
+        JOptionPane.showMessageDialog(null, "주사위 결과 : " + diceResult + " 패널티 : " + penalty + " 사용한 눈금 : " + deduct + "\n남은 눈금이 0이하입니다.", "Can not move", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    protected @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
 
         WaitCall<ArrayList<Direction>> call = new WaitCall<ArrayList<Direction>>() {
             @Override
             public ArrayList<Direction> call() throws Exception {
-                CombDirView dirView = new CombDirView(diceResult, penalty);
+                CombDirView dirView = new CombDirView(diceResult, penalty, deduct);
                 mainFrame.add(dirView);
                 updateMainFrame();
 
@@ -202,13 +207,39 @@ public class SwingGameController extends BridgeMonopolyGame {
     }
 
     @Override
+    protected Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct) {
+        Callable<Boolean> call = () -> {
+            CombDirView dirView = new CombDirView(diceResult, penalty, deduct);
+            mainFrame.add(dirView);
+            updateMainFrame();
+
+            String option[] = new String[]{"다리로 이동", "그냥 진행"};
+            int answer = JOptionPane.showOptionDialog(null, "다리로 이동하시겠습니까? (penalty가 증가합니다)", "다리 이동", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, null);
+            mainFrame.remove(dirView);
+            if (answer == 0)
+                return true;
+            return false;
+        };
+
+        return call;
+    }
+
+    @Override
     protected void alertInvalidMove() {
-        JOptionPane.showMessageDialog(null, "해당 방향으로 이동할 수 없습니다..", "Can not move", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "해당 방향으로 이동할 수 없습니다.", "Can not move", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    protected void displayCanNotMoveBack() {
+        JLabel textLabel = new JLabel("이제부터 앞으로만 이동할 수 있습니다.");
+        textLabel.setFont(new Font("Arial", Font.BOLD, 25));
+        mainFrame.add(textLabel, BorderLayout.NORTH);
     }
 
     @Override
     protected void displayWinner() {
-
+        Player winner = turn.getWinner();
+        JOptionPane.showMessageDialog(null, "게임이 종료되었습니다.\n승리 : Player" + winner.getId() + "\n획득한 점수 : " + winner.getPoint(), "Game end", JOptionPane.ERROR_MESSAGE);
     }
 
     private void updateMainFrame() {

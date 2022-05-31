@@ -25,7 +25,7 @@ public class Piece {
             if (cur.isMovableDir(dir.get(i), moveType)) {
                 Cell dest = cur.getAdjacentCell(dir.get(i));
 
-                if (cur instanceof BridgeCell && dest instanceof BridgeCell) {
+                if (moveType == MoveType.BRIDGE && cur instanceof BridgeCell && dest instanceof BridgeCell) {
                     if (!(i+1 < dir.size()))
                         return MoveResult.FAIL;
                     if (dir.get(i) != Direction.RIGHT)

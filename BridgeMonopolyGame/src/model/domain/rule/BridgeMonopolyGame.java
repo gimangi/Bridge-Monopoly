@@ -3,16 +3,17 @@ package model.domain.rule;
 import model.data.Direction;
 import model.data.MoveResult;
 import model.data.MoveType;
+import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 public abstract class BridgeMonopolyGame {
@@ -27,6 +28,7 @@ public abstract class BridgeMonopolyGame {
 
     private int endPlayers = 0;
 
+    private static final ArrayList<Direction> bridgeMoveDirs = new ArrayList<>(Arrays.asList(Direction.RIGHT, Direction.RIGHT));
 
     /*
         Decide whether to use the default map.
@@ -66,14 +68,31 @@ public abstract class BridgeMonopolyGame {
     protected abstract Callable<Integer> rollDice();
 
     /*
+        Display that there are no movable scales
+     */
+    protected abstract void displayMoveValueZero(int diceResult, int penalty, int deduct);
+
+    /*
         Displays the result of the dice and receives the input direction to move.
      */
-    protected abstract @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty);
+    protected abstract Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct);
+
+    /*
+        If player are on a bridge cell, player can choose whether to move to the bridge or not.
+     */
+    protected abstract Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct);
+
 
     /*
         Alert that the direction cannot be moved.
      */
     protected abstract void alertInvalidMove();
+
+    /*
+        Display that you cannot move backwards
+     */
+    protected abstract void displayCanNotMoveBack();
+
 
     /*
         Display the winner
@@ -115,7 +134,8 @@ public abstract class BridgeMonopolyGame {
 
             // run turn
             Player owner;
-            while ((owner = turn.getTurnOwner()) != null) {
+            while (numOfPlayers - endPlayers > 1) {
+                owner = turn.getTurnOwner();
                 refresh();
 
                 boolean stay = selectStay(owner.getId()).call();
@@ -131,28 +151,55 @@ public abstract class BridgeMonopolyGame {
                     // combine direction
                     ArrayList<Direction> dirs;
 
+                    int deduct = 0;
+
                     while (true) {
-                        dirs = enterDirection(diceResult, owner.getPenalty()).call();
-                        MoveType moveType = MoveType.ADJACENT;
+                        refresh();
+                        if (diceResult - owner.getPenalty() - deduct < 1) {
+                            displayMoveValueZero(diceResult, owner.getPenalty(), deduct);
+                            break;
+                        }
 
-                        // not allow move back
-                        if (!turn.getAllowMoveBack())
-                            moveType = MoveType.FORWARD;
+                        Cell curCell = owner.getPiecePosition();
+                        MoveResult moveResult = null;
 
-                        MoveResult moveResult = owner.move(dirs, moveType);
+                        // select bridge move
+                        if (curCell instanceof BridgeCell && curCell.isMovableDir(Direction.RIGHT, MoveType.BRIDGE) && (diceResult - owner.getPenalty()) >= 2) {
+                            if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
+                                moveResult = owner.move(bridgeMoveDirs, MoveType.BRIDGE);
+                                deduct = 2;
+                            }
+                        }
+
+                        // TODO : 이동 가능 눈금이 0일 때 break
+
+                        // not bridge moved
+                        if (moveResult == null) {
+                            dirs = enterDirection(diceResult, owner.getPenalty(), deduct).call();
+                            MoveType moveType = MoveType.ADJACENT;
+
+                            // not allow move back
+                            if (!turn.getAllowMoveBack())
+                                moveType = MoveType.FORWARD;
+
+                            moveResult = owner.move(dirs, moveType);
+                        }
+
                         // move successfully
                         if (moveResult != MoveResult.FAIL) {
+                            curCell = owner.getPiecePosition();
 
                             // get point
-                            Cell curCell = owner.getPiecePosition();
                             if (curCell instanceof ItemCell) {
                                 owner.addPoint(((ItemCell) curCell).getPoint());
                             }
 
                             // player end
                             if (owner.isEnd()) {
-                                if (endPlayers == 0)
+                                if (endPlayers == 0) {
+                                    displayCanNotMoveBack();
                                     owner.addPoint(7);
+                                }
                                 else if (endPlayers == 1)
                                     owner.addPoint(3);
                                 else if (endPlayers == 2)
@@ -163,7 +210,8 @@ public abstract class BridgeMonopolyGame {
                             // get penalty
                             if (moveResult == MoveResult.SUCCESS_BRIDGED)
                                 owner.addPenalty(1);
-                            break;
+                            else
+                                break;
                         }
                         // can not move
                         else
@@ -173,6 +221,7 @@ public abstract class BridgeMonopolyGame {
                 }
                 turn.proceedTurn();
             }
+            refresh();
             displayWinner();
         } catch (Exception e) {
             e.printStackTrace();
