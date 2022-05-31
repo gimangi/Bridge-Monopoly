@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public abstract class BridgeMonopolyGame {
 
@@ -27,11 +28,11 @@ public abstract class BridgeMonopolyGame {
     /*
         Decide whether to use the default map.
      */
-    protected abstract boolean selectUseDefaultMap();
+    protected abstract Callable<Boolean> selectUseDefaultMap();
     /*
         Select map file name.
      */
-    protected abstract String enterMapFile();
+    protected abstract Callable<String> enterMapFile();
 
     /*
         It outputs that the input file does not exist and proceeds to the default map.
@@ -41,7 +42,7 @@ public abstract class BridgeMonopolyGame {
     /*
         Input the number of players to play the game.
      */
-    protected abstract int enterNumberOfPlayers();
+    protected abstract Callable<Integer> enterNumberOfPlayers();
 
 
     /*
@@ -54,17 +55,17 @@ public abstract class BridgeMonopolyGame {
     /*
         The player chooses whether to rest or roll the dice for that turn.
      */
-    protected abstract boolean selectStay(int playerId);
+    protected abstract Callable<Boolean> selectStay(int playerId);
 
     /*
         The dice are rolled based on the player's input.
      */
-    protected abstract int rollDice();
+    protected abstract Callable<Integer> rollDice();
 
     /*
         Displays the result of the dice and receives the input direction to move.
      */
-    protected abstract @NotNull ArrayList<Direction> enterDirection(int diceResult, int penalty);
+    protected abstract @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty);
 
     /*
         Alert that the direction cannot be moved.
@@ -78,78 +79,83 @@ public abstract class BridgeMonopolyGame {
 
     public void run() {
 
-        while (mapDecoder == null) {
-            try {
-                if (selectUseDefaultMap())
-                    mapDecoder = new MapDecoder(enterMapFile());
-                else
-                    mapDecoder = new MapDecoder();
+        try {
 
-                board = mapDecoder.getBoard();
-            } catch (IOException e) {
-                displayNotFoundMap();
-            }
-        }
-
-        // create map by absolute position
-        board.createAbsoluteMap();
-
-        // initialize players
-        Player.clear();
-        numOfPlayers = enterNumberOfPlayers();
-        ArrayList<Player> playerList = new ArrayList<>();
-        for (int i = 0; i < numOfPlayers; i++) {
-            playerList.add(Player.newInstance(board.getStartCell()));
-        }
-
-        // initialize turn
-        turn = new Turn(playerList);
-
-        initDisplay();
-
-        // run turn
-        Player owner;
-        while ((owner = turn.getTurnOwner()) != null) {
-            boolean stay = selectStay(owner.getId());
-
-            // stay turn
-            if (stay) {
-                owner.addPenalty(-1);
-            }
-            // move turn
-            else {
-                // roll dice
-                int diceResult = rollDice();
-                // combine direction
-                ArrayList<Direction> dirs;
-
-                while (true) {
-                    dirs = enterDirection(diceResult, owner.getPenalty());
-                    MoveType moveType = MoveType.ADJACENT;
-
-                    // not allow move back
-                    if (!turn.getAllowMoveBack())
-                        moveType = MoveType.FORWARD;
-
-                    MoveResult moveResult = owner.move(dirs, moveType);
-                    // move successfully
-                    if (moveResult != MoveResult.FAIL) {
-
-                        // get penalty
-                        if (moveResult == MoveResult.SUCCESS_BRIDGED)
-                            owner.addPenalty(1);
-                        break;
-                    }
-                    // can not move
+            while (mapDecoder == null) {
+                try {
+                    if (selectUseDefaultMap().call())
+                        mapDecoder = new MapDecoder(enterMapFile().call());
                     else
-                        alertInvalidMove();
-                }
+                        mapDecoder = new MapDecoder();
 
+                    board = mapDecoder.getBoard();
+                } catch (IOException e) {
+                    displayNotFoundMap();
+                }
             }
-            refresh();
-            turn.proceedTurn();
+
+            // create map by absolute position
+            board.createAbsoluteMap();
+
+            // initialize players
+            Player.clear();
+            numOfPlayers = enterNumberOfPlayers().call();
+            ArrayList<Player> playerList = new ArrayList<>();
+            for (int i = 0; i < numOfPlayers; i++) {
+                playerList.add(Player.newInstance(board.getStartCell()));
+            }
+
+            // initialize turn
+            turn = new Turn(playerList);
+
+            initDisplay();
+
+            // run turn
+            Player owner;
+            while ((owner = turn.getTurnOwner()) != null) {
+                boolean stay = selectStay(owner.getId()).call();
+
+                // stay turn
+                if (stay) {
+                    owner.addPenalty(-1);
+                }
+                // move turn
+                else {
+                    // roll dice
+                    int diceResult = rollDice().call();
+                    // combine direction
+                    ArrayList<Direction> dirs;
+
+                    while (true) {
+                        dirs = enterDirection(diceResult, owner.getPenalty()).call();
+                        MoveType moveType = MoveType.ADJACENT;
+
+                        // not allow move back
+                        if (!turn.getAllowMoveBack())
+                            moveType = MoveType.FORWARD;
+
+                        MoveResult moveResult = owner.move(dirs, moveType);
+                        // move successfully
+                        if (moveResult != MoveResult.FAIL) {
+
+                            // get penalty
+                            if (moveResult == MoveResult.SUCCESS_BRIDGED)
+                                owner.addPenalty(1);
+                            break;
+                        }
+                        // can not move
+                        else
+                            alertInvalidMove();
+                    }
+
+                }
+                refresh();
+                turn.proceedTurn();
+            }
+            displayWinner();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        displayWinner();
     }
 
 }

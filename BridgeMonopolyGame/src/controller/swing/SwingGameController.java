@@ -4,15 +4,15 @@ import model.data.Direction;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
 import view.swing.control.DiceView;
+import view.swing.control.SelectStayView;
 import view.swing.display.MainFrame;
 import view.swing.display.MapView;
 import view.swing.display.PlayerContainerView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class SwingGameController extends BridgeMonopolyGame {
 
@@ -27,17 +27,21 @@ public class SwingGameController extends BridgeMonopolyGame {
     }
 
     @Override
-    protected boolean selectUseDefaultMap() {
-        String option[] = new String[]{"맵 파일을 직접 선택", "기본 맵을 사용"};
-        int answer = JOptionPane.showOptionDialog(null, "맵 파일을 불러올 방법을 선택해주세요.", "맵 선택", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, null);
-        if (answer == 0)
-            return true;
-        return false;
+    protected Callable<Boolean> selectUseDefaultMap() {
+        Callable<Boolean> call = () -> {
+            String option[] = new String[]{"맵 파일을 직접 선택", "기본 맵을 사용"};
+            int answer = JOptionPane.showOptionDialog(null, "맵 파일을 불러올 방법을 선택해주세요.", "맵 선택", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, null);
+            if (answer == 0)
+                return true;
+            return false;
+        };
+        return call;
     }
 
     @Override
-    protected String enterMapFile() {
-        return JOptionPane.showInputDialog("사용할 맵 파일 이름을 입력해주세요.");
+    protected Callable<String> enterMapFile() {
+        Callable<String> call = () -> JOptionPane.showInputDialog("사용할 맵 파일 이름을 입력해주세요.");
+        return call;
     }
 
     @Override
@@ -46,21 +50,25 @@ public class SwingGameController extends BridgeMonopolyGame {
     }
 
     @Override
-    protected int enterNumberOfPlayers() {
+    protected Callable<Integer> enterNumberOfPlayers() {
 
-        while (true) {
-            String input = JOptionPane.showInputDialog("플레이어 수를 입력해주세요. (2 ~ 4)");
-            int res;
-            try {
-                res = Integer.parseInt(input);
-                if (2 <= res && res <= 4)
-                    return res;
-                else
-                    JOptionPane.showMessageDialog(null, "플레이어 수는 2 ~ 4의 범위에서 선택할 수 있습니다..", "Invalid number", JOptionPane.ERROR_MESSAGE);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "숫자를 입력해주세요..", "Invalid number", JOptionPane.ERROR_MESSAGE);
+        Callable<Integer> call = () -> {
+            while (true) {
+                String input = JOptionPane.showInputDialog("플레이어 수를 입력해주세요. (2 ~ 4)");
+                int res;
+                try {
+                    res = Integer.parseInt(input);
+                    if (2 <= res && res <= 4)
+                        return res;
+                    else
+                        JOptionPane.showMessageDialog(null, "플레이어 수는 2 ~ 4의 범위에서 선택할 수 있습니다..", "Invalid number", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "숫자를 입력해주세요..", "Invalid number", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
+        };
+
+        return call;
     }
 
     @Override
@@ -79,37 +87,37 @@ public class SwingGameController extends BridgeMonopolyGame {
     }
 
     @Override
-    protected boolean selectStay(int playerId) {
-        return false;
+    protected Callable<Boolean> selectStay(int playerId) {
+
+        Callable<Boolean> call = () -> {
+            SelectStayView selectView = new SelectStayView(turn.getTurnOwner().getId());
+            mainFrame.add(selectView, BorderLayout.EAST);
+            notifyUpdate();
+            return selectView.getSelected();
+        };
+
+        return call;
     }
 
     @Override
-    protected int rollDice() {
-        DiceView diceView = new DiceView();
-        mainFrame.add(diceView, BorderLayout.EAST);
-        notifyUpdate();
+    protected Callable<Integer> rollDice() {
 
-        diceView.addPropertyChangeListener(evt -> {
-            synchronized (this) {
-                notifyAll();
-            }
-        });
+        Callable<Integer> call = () -> {
+            DiceView diceView = new DiceView();
+            return diceView.getDiceResult();
+        };
 
-        synchronized (this) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return diceView.getDiceResult();
+        return call;
     }
 
     @Override
-    protected @NotNull ArrayList<Direction> enterDirection(int diceResult, int penalty) {
-        System.out.println(diceResult);
-        return null;
+    protected @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty) {
+
+        Callable<ArrayList<Direction>> call = () -> {
+            return null;
+        };
+
+        return call;
     }
 
     @Override
@@ -126,4 +134,5 @@ public class SwingGameController extends BridgeMonopolyGame {
         mainFrame.revalidate();
         mainFrame.repaint();
     }
+
 }
