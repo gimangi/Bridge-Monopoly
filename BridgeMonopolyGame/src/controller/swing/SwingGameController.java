@@ -77,7 +77,7 @@ public class SwingGameController extends BridgeMonopolyGame {
         playerContainerView = new PlayerContainerView(turn.getPlayers());
         mainFrame.add(mapView, BorderLayout.WEST);
         mainFrame.add(playerContainerView, BorderLayout.SOUTH);
-        notifyUpdate();
+        updateMainFrame();
     }
 
     @Override
@@ -89,11 +89,28 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected Callable<Boolean> selectStay(int playerId) {
 
-        Callable<Boolean> call = () -> {
-            SelectStayView selectView = new SelectStayView(turn.getTurnOwner().getId());
-            mainFrame.add(selectView, BorderLayout.EAST);
-            notifyUpdate();
-            return selectView.getSelected();
+        WaitCall<Boolean> call = new WaitCall() {
+            @Override
+            public Boolean call() throws Exception {
+                SelectStayView selectView = new SelectStayView(turn.getTurnOwner().getId());
+                mainFrame.add(selectView, BorderLayout.EAST);
+                updateMainFrame();
+
+                selectView.getBtnStay().addActionListener(e -> {
+                    mainFrame.remove(selectView);
+                    updateMainFrame();
+                    signalResult(true);
+                });
+
+                selectView.getBtnMove().addActionListener(e -> {
+                    mainFrame.remove(selectView);
+                    updateMainFrame();
+                    signalResult(false);
+                });
+
+                waitResult();
+                return (Boolean) this.result;
+            }
         };
 
         return call;
@@ -102,9 +119,24 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected Callable<Integer> rollDice() {
 
-        Callable<Integer> call = () -> {
-            DiceView diceView = new DiceView();
-            return diceView.getDiceResult();
+        WaitCall<Integer> call = new WaitCall<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                DiceView diceView = new DiceView();
+                mainFrame.add(diceView, BorderLayout.EAST);
+                updateMainFrame();
+
+                diceView.getButton().addActionListener(e -> {
+                    int diceResult = diceView.getDiceResult();
+                    mainFrame.remove(diceView);
+                    updateMainFrame();
+                    signalResult(diceResult);
+                });
+
+                waitResult();
+                System.out.println(result);
+                return result;
+            }
         };
 
         return call;
@@ -130,7 +162,7 @@ public class SwingGameController extends BridgeMonopolyGame {
 
     }
 
-    private void notifyUpdate() {
+    private void updateMainFrame() {
         mainFrame.revalidate();
         mainFrame.repaint();
     }

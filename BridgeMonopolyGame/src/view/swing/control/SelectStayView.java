@@ -2,6 +2,7 @@ package view.swing.control;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.Callable;
 
 public class SelectStayView extends JPanel {
 
@@ -18,17 +19,6 @@ public class SelectStayView extends JPanel {
         btnStay = new JButton("쉬어가기");
         btnMove = new JButton("주사위 굴리기");
 
-        btnStay.addActionListener(e -> {
-            this.selected = true;
-            removeAll();
-            updateUI();
-        });
-        btnMove.addActionListener(e -> {
-            this.selected = false;
-            removeAll();
-            updateUI();
-        });
-
         add(text);
         add(btnStay);
         add(btnMove);
@@ -36,6 +26,14 @@ public class SelectStayView extends JPanel {
 
     public boolean getSelected() {
         return this.selected;
+    }
+
+    public JButton getBtnStay() {
+        return this.btnStay;
+    }
+
+    public JButton getBtnMove() {
+        return this.btnMove;
     }
 
 

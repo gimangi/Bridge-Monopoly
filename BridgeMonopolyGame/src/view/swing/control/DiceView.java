@@ -13,34 +13,33 @@ public class DiceView extends JPanel {
 
     private int diceResult = 0;
 
+    private final JButton diceBtn;
+
     public DiceView() {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(200, 300));
 
         ImageIcon img = new ImageIcon(IMG_DICE);
-        JButton btn = new JButton(img);
-        btn.setPreferredSize(new Dimension(200, 200));
+        diceBtn = new JButton(img);
+        diceBtn.setPreferredSize(new Dimension(200, 200));
         JLabel text = new JLabel("주사위를 굴리세요.");
-        btn.setBorderPainted(false);
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Random random = new Random();
-                random.setSeed(System.currentTimeMillis());
+        diceBtn.setBorderPainted(false);
 
-                diceResult = random.nextInt(6) + 1;
-                remove(btn);
-                remove(text);
-                updateUI();
-            }
-        });
+        Random random = new Random();
+        random.setSeed(System.currentTimeMillis());
 
-        add(btn);
+        diceResult = random.nextInt(6) + 1;
+
+        add(diceBtn);
         add(text);
     }
 
     public int getDiceResult() {
         return this.diceResult;
+    }
+
+    public JButton getButton() {
+        return this.diceBtn;
     }
 
 }

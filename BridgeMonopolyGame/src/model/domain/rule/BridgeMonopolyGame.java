@@ -6,7 +6,6 @@ import model.data.MoveType;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
-import model.exception.InvalidInputException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -155,6 +154,27 @@ public abstract class BridgeMonopolyGame {
             displayWinner();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public abstract static class WaitCall<T> implements Callable<T> {
+        protected T result;
+
+        public void signalResult(T result) {
+            synchronized (this) {
+                this.result = result;
+                notify();
+            }
+        }
+
+        public void waitResult() {
+            try {
+                synchronized (this) {
+                    wait();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
