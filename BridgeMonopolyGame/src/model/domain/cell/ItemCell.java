@@ -32,6 +32,19 @@ public class ItemCell extends Cell {
         return this.adjacentSet.get(dir);
     }
 
+    public int getPoint() {
+        switch (itemType) {
+            case HAMMER:
+                return 2;
+            case SAW:
+                return 3;
+            case PHILIPS_DRIVER:
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
     public enum ItemType {
         START, END,                 // base cell
         EMPTY,                      // empty cell

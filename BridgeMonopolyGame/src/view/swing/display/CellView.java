@@ -3,13 +3,19 @@ package view.swing.display;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
+import model.domain.player.Piece;
+import model.domain.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CellView extends JLabel {
+public class CellView extends JPanel {
+
+    public final static int PIECE_WIDTH = 15;
+    public final static int PIECE_HEIGHT = 15;
 
     public final static int CELL_WIDTH = 50;
     public final static int CELL_HEIGHT = 50;
@@ -26,9 +32,18 @@ public class CellView extends JLabel {
     private final static String IC_BRIDGE = DIR_RES + "ic_bridge.png";
     private final static String IC_EMPTY = DIR_RES + "ic_empty.png";
 
-    private ArrayList<Integer> players = new ArrayList<>();
+    private final ArrayList<PieceView> pieceViewList = new ArrayList();
+
+    private final Cell cell;
 
     public CellView(Cell cell) {
+        this.cell = cell;
+        setPreferredSize(new Dimension(CELL_WIDTH, CELL_HEIGHT));
+        setLayout(new GridLayout(2, 2));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
         String resource = "";
 
         if (cell == null)
@@ -71,14 +86,24 @@ public class CellView extends JLabel {
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(CELL_WIDTH, CELL_HEIGHT, Image.SCALE_DEFAULT);
         imageIcon.setImage(image);
-        setIcon(imageIcon);
+
+        g.drawImage(imageIcon.getImage(), 0, 0,   null);
+        setOpaque(false);
+        super.paintComponent(g);
     }
 
-    public void putPlayer(int playerId) {
-
+    public void putPiece(@NotNull Player player) {
+        PieceView pieceView = new PieceView(player.getId(), PIECE_WIDTH, PIECE_HEIGHT);
+        pieceViewList.add(pieceView);
+        add(pieceView);
+        updateUI();
     }
 
-    public void removePlayer(int playerId) {
+    public void clearPiece() {
+        removeAll();
+    }
 
+    public Cell getCell() {
+        return this.cell;
     }
 }

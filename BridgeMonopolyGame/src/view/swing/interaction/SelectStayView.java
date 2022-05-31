@@ -1,8 +1,7 @@
-package view.swing.control;
+package view.swing.interaction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.Callable;
 
 public class SelectStayView extends JPanel {
 

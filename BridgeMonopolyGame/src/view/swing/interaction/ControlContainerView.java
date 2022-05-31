@@ -1,4 +1,4 @@
-package view.swing.control;
+package view.swing.interaction;
 
 import javax.swing.*;
 

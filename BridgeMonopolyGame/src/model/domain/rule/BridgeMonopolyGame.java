@@ -3,6 +3,8 @@ package model.domain.rule;
 import model.data.Direction;
 import model.data.MoveResult;
 import model.data.MoveType;
+import model.domain.cell.Cell;
+import model.domain.cell.ItemCell;
 import model.domain.map.Board;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
@@ -22,6 +24,8 @@ public abstract class BridgeMonopolyGame {
     private int numOfPlayers;
 
     protected Turn turn;
+
+    private int endPlayers = 0;
 
 
     /*
@@ -138,6 +142,23 @@ public abstract class BridgeMonopolyGame {
                         MoveResult moveResult = owner.move(dirs, moveType);
                         // move successfully
                         if (moveResult != MoveResult.FAIL) {
+
+                            // get point
+                            Cell curCell = owner.getPiecePosition();
+                            if (curCell instanceof ItemCell) {
+                                owner.addPoint(((ItemCell) curCell).getPoint());
+                            }
+
+                            // player end
+                            if (owner.isEnd()) {
+                                if (endPlayers == 0)
+                                    owner.addPoint(7);
+                                else if (endPlayers == 1)
+                                    owner.addPoint(3);
+                                else if (endPlayers == 2)
+                                    owner.addPoint(1);
+                                endPlayers++;
+                            }
 
                             // get penalty
                             if (moveResult == MoveResult.SUCCESS_BRIDGED)

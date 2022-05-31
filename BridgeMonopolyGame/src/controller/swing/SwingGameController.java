@@ -1,11 +1,12 @@
 package controller.swing;
 
 import model.data.Direction;
+import model.domain.player.Player;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
-import view.swing.control.CombDirView;
-import view.swing.control.DiceView;
-import view.swing.control.SelectStayView;
+import view.swing.interaction.CombDirView;
+import view.swing.interaction.DiceView;
+import view.swing.interaction.SelectStayView;
 import view.swing.display.MainFrame;
 import view.swing.display.MapView;
 import view.swing.display.PlayerContainerView;
@@ -85,6 +86,14 @@ public class SwingGameController extends BridgeMonopolyGame {
     protected void refresh() {
         playerContainerView.setTurnOwner(turn.getTurnOwner());
         playerContainerView.updatePlayerStatus(turn.getPlayers());
+
+        mapView.clearPiece();
+
+        for (Player player : turn.getPlayers()) {
+            mapView.displayPiece(player);
+        }
+
+        updateMainFrame();
     }
 
     @Override
@@ -148,7 +157,7 @@ public class SwingGameController extends BridgeMonopolyGame {
         WaitCall<ArrayList<Direction>> call = new WaitCall<ArrayList<Direction>>() {
             @Override
             public ArrayList<Direction> call() throws Exception {
-                CombDirView dirView = new CombDirView(diceResult);
+                CombDirView dirView = new CombDirView(diceResult, penalty);
                 mainFrame.add(dirView);
                 updateMainFrame();
 

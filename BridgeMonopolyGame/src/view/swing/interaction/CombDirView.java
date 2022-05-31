@@ -1,16 +1,17 @@
-package view.swing.control;
+package view.swing.interaction;
 
 import model.data.Direction;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class CombDirView extends JPanel {
 
     private final int diceResult;
+
+    private final int penalty;
 
     private final JButton[] btnList = new JButton[4];
 
@@ -22,13 +23,16 @@ public class CombDirView extends JPanel {
 
     private static final String[] btnLabel = {"Up", "Down", "Left", "Right"};
 
-    public CombDirView(int diceResult) {
+    public CombDirView(int diceResult, int penalty) {
         this.diceResult = diceResult;
+        this.penalty = penalty;
 
         setLayout(new GridBagLayout());
 
-        labelDiceValue.setText("주사위 결과 : " + diceResult);
-        add(labelDiceValue, getConstraint(1, 2));
+        labelDiceValue.setText("주사위 결과 : " + diceResult + ", penalty : " + penalty + ", 이동 가능 눈금 : " + (diceResult - penalty));
+        GridBagConstraints labelCons = getConstraint(1, 1);
+        labelCons.gridwidth = 3;
+        add(labelDiceValue, labelCons);
 
         for (int i = 0; i < 4; i++) {
             btnList[i] = new JButton(btnLabel[i]);
@@ -82,7 +86,7 @@ public class CombDirView extends JPanel {
         labelResult.setText(curText);
         updateUI();
 
-        if (selectedDirs.size() >= diceResult)
+        if (selectedDirs.size() >= diceResult - penalty)
             return true;
         return false;
     }
