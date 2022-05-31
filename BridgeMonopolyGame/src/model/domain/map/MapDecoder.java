@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 
 public class MapDecoder {
 
@@ -32,7 +32,7 @@ public class MapDecoder {
     private RelativePosition curPos = new RelativePosition(0, 0);
 
     // bridge start cell not yet connected to end
-    private final HashMap<Integer, BridgeCell> openedBridge = new HashMap<>();
+    private final ArrayList<BridgeCell> openedBridge = new ArrayList<>();
 
     public MapDecoder() throws IOException {
         this(DEFAULT_FILE);
@@ -58,6 +58,7 @@ public class MapDecoder {
 
                 lineNum++;
             }
+            linkBridge(cellList);
             this.board.putCellList(cellList);
 
         } catch (InvalidInputException e) {
@@ -100,20 +101,10 @@ public class MapDecoder {
                 break;
             case "B":
                 res = new BridgeCell(curPos, BridgeCell.BridgeType.START);
-                openedBridge.put(curPos.getY(), (BridgeCell) res);
+                openedBridge.add((BridgeCell) res);
                 break;
             case "b":
                 res = new BridgeCell(curPos, BridgeCell.BridgeType.END);
-
-                // link connect cell
-                BridgeCell pairCell = openedBridge.get(curPos.getY());
-                if (pairCell == null)
-                    throw new BridgeNotFoundException();
-                pairCell.setConnectedCell(res);
-                ((BridgeCell) res).setConnectedCell(pairCell);
-
-                // close bridge cell
-                openedBridge.remove(curPos.getY());
                 break;
             default:
                 throw new InvalidInputException(curLine);
@@ -138,6 +129,25 @@ public class MapDecoder {
         }
 
         return res;
+    }
+
+    private void linkBridge(ArrayList<Cell> cellList) {
+        for (Cell c : cellList) {
+            if (c instanceof BridgeCell && ((BridgeCell) c).getBridgeType() == BridgeCell.BridgeType.END) {
+
+                for (Iterator<BridgeCell> iter = openedBridge.iterator(); iter.hasNext();) {
+                    BridgeCell opened = iter.next();
+
+                    RelativePosition cPos = c.getPosition();
+                    RelativePosition oPos = opened.getPosition();
+                    if (cPos.getY() == oPos.getY() && Math.abs(cPos.getX() - oPos.getX()) == 2) {
+                        ((BridgeCell) c).setConnectedCell(opened);
+                        opened.setConnectedCell(c);
+                        iter.remove();
+                    }
+                }
+            }
+        }
     }
 
     private static Direction getDirection(String input) throws InvalidInputException {
