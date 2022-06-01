@@ -125,9 +125,9 @@ public class CLIGameController extends BridgeMonopolyGame {
     @Override
     protected Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
         System.out.println("이동할 방향을 공백없이 순서대로 입력하세요. (위 : U, 아래 : D, 왼쪽 : L, 오른쪽 : R)");
-
         Callable<ArrayList<Direction>> call = () -> {
             while (true) {
+
                 ArrayList<Direction> dirs = new ArrayList<>();
                 boolean success = true;
                 String input = sc.next();
@@ -153,6 +153,8 @@ public class CLIGameController extends BridgeMonopolyGame {
 
                 if (success)
                     return dirs;
+                else
+                    System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
             }
         };
 
