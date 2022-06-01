@@ -1,4 +1,4 @@
-package view.swing.display;
+package view.gui.display;
 
 import model.domain.player.Player;
 import org.jetbrains.annotations.NotNull;

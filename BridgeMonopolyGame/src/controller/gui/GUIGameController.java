@@ -1,22 +1,22 @@
-package controller.swing;
+package controller.gui;
 
 import model.data.Direction;
 import model.domain.player.Player;
 import model.domain.rule.BridgeMonopolyGame;
 import org.jetbrains.annotations.NotNull;
-import view.swing.interaction.CombDirView;
-import view.swing.interaction.DiceView;
-import view.swing.interaction.SelectStayView;
-import view.swing.display.MainFrame;
-import view.swing.display.MapView;
-import view.swing.display.PlayerContainerView;
+import view.gui.interaction.CombDirView;
+import view.gui.interaction.DiceView;
+import view.gui.interaction.SelectStayView;
+import view.gui.display.MainFrame;
+import view.gui.display.MapView;
+import view.gui.display.PlayerContainerView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-public class SwingGameController extends BridgeMonopolyGame {
+public class GUIGameController extends BridgeMonopolyGame {
 
     private final MainFrame mainFrame;
 
@@ -24,7 +24,7 @@ public class SwingGameController extends BridgeMonopolyGame {
 
     private PlayerContainerView playerContainerView;
 
-    public SwingGameController(final MainFrame view) {
+    public GUIGameController(final MainFrame view) {
         this.mainFrame = view;
     }
 
@@ -63,9 +63,9 @@ public class SwingGameController extends BridgeMonopolyGame {
                     if (2 <= res && res <= 4)
                         return res;
                     else
-                        JOptionPane.showMessageDialog(null, "플레이어 수는 2 ~ 4의 범위에서 선택할 수 있습니다..", "Invalid number", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "플레이어 수는 2 ~ 4의 범위에서 선택할 수 있습니다.", "Invalid number", JOptionPane.ERROR_MESSAGE);
                 } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "숫자를 입력해주세요..", "Invalid number", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "숫자를 입력해주세요.", "Invalid number", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -76,7 +76,7 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected void initDisplay() {
         mapView = new MapView(board.getAbsoluteMap());
-        playerContainerView = new PlayerContainerView(turn.getPlayers());
+        playerContainerView = new PlayerContainerView(turn.getPlayerList());
         mainFrame.add(mapView, BorderLayout.WEST);
         mainFrame.add(playerContainerView, BorderLayout.SOUTH);
         updateMainFrame();
@@ -85,11 +85,11 @@ public class SwingGameController extends BridgeMonopolyGame {
     @Override
     protected void refresh() {
         playerContainerView.setTurnOwner(turn.getTurnOwner());
-        playerContainerView.updatePlayerStatus(turn.getPlayers());
+        playerContainerView.updatePlayerStatus(turn.getPlayerList());
 
         mapView.clearPiece();
 
-        for (Player player : turn.getPlayers()) {
+        for (Player player : turn.getPlayerList()) {
             mapView.displayPiece(player);
         }
 

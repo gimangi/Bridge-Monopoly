@@ -1,4 +1,4 @@
-package view.swing.interaction;
+package view.gui.interaction;
 
 import javax.swing.*;
 import java.awt.*;

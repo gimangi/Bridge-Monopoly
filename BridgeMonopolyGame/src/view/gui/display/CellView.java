@@ -1,9 +1,8 @@
-package view.swing.display;
+package view.gui.display;
 
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
-import model.domain.player.Piece;
 import model.domain.player.Player;
 import org.jetbrains.annotations.NotNull;
 

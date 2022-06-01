@@ -1,4 +1,4 @@
-package view.swing.display;
+package view.gui.display;
 
 import model.domain.cell.Cell;
 import model.domain.player.Player;

@@ -60,7 +60,7 @@ public class Turn {
         return this.allowMoveBack;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public ArrayList<Player> getPlayerList() {
         return this.players;
     }
 

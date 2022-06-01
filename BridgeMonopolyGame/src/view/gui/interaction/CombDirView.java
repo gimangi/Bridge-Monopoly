@@ -1,4 +1,4 @@
-package view.swing.interaction;
+package view.gui.interaction;
 
 import model.data.Direction;
 import org.jetbrains.annotations.NotNull;
