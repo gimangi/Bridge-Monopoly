@@ -154,7 +154,6 @@ public abstract class BridgeMonopolyGame {
                     int deduct = 0;
 
                     while (true) {
-                        refresh();
                         if (diceResult - owner.getPenalty() - deduct < 1) {
                             displayMoveValueZero(diceResult, owner.getPenalty(), deduct);
                             break;
@@ -168,6 +167,7 @@ public abstract class BridgeMonopolyGame {
                             if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
                                 moveResult = owner.move(bridgeMoveDirs, MoveType.BRIDGE);
                                 deduct = 2;
+                                refresh();
                             }
                         }
 
@@ -216,6 +216,7 @@ public abstract class BridgeMonopolyGame {
                         // can not move
                         else
                             alertInvalidMove();
+
                     }
 
                 }

@@ -124,7 +124,7 @@ public class CLIGameController extends BridgeMonopolyGame {
 
     @Override
     protected Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
-        System.out.println("이동할 방향을 공백없이 순서대로 입력하세요. (위 : U, 아래 : D, 왼쪽 : L, 오른쪽 : R");
+        System.out.println("이동할 방향을 공백없이 순서대로 입력하세요. (위 : U, 아래 : D, 왼쪽 : L, 오른쪽 : R)");
 
         Callable<ArrayList<Direction>> call = () -> {
             while (true) {
