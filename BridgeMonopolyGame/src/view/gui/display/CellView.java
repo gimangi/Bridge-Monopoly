@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class CellView extends JPanel {
@@ -19,17 +19,15 @@ public class CellView extends JPanel {
     public final static int CELL_WIDTH = 50;
     public final static int CELL_HEIGHT = 50;
 
-    private final static String DIR_RES = "." + File.separator + "res" + File.separator;
-
-    private final static String IC_CELL_START = DIR_RES + "ic_cell_start.png";
-    private final static String IC_CELL_END = DIR_RES + "ic_cell_end.png";
-    private final static String IC_CELL_EMPTY = DIR_RES + "ic_cell_empty.png";
-    private final static String IC_CELL_HAMMER = DIR_RES + "ic_cell_hammer.png";
-    private final static String IC_CELL_SAW = DIR_RES + "ic_cell_saw.png";
-    private final static String IC_CELL_DRIVER = DIR_RES + "ic_cell_driver.png";
-    private final static String IC_CELL_BRIDGE_START = DIR_RES + "ic_cell_bridge_start.png";
-    private final static String IC_BRIDGE = DIR_RES + "ic_bridge.png";
-    private final static String IC_EMPTY = DIR_RES + "ic_empty.png";
+    private final static String IC_CELL_START = "ic_cell_start.png";
+    private final static String IC_CELL_END = "ic_cell_end.png";
+    private final static String IC_CELL_EMPTY = "ic_cell_empty.png";
+    private final static String IC_CELL_HAMMER = "ic_cell_hammer.png";
+    private final static String IC_CELL_SAW = "ic_cell_saw.png";
+    private final static String IC_CELL_DRIVER = "ic_cell_driver.png";
+    private final static String IC_CELL_BRIDGE_START = "ic_cell_bridge_start.png";
+    private final static String IC_BRIDGE = "ic_bridge.png";
+    private final static String IC_EMPTY = "ic_empty.png";
 
     private final ArrayList<PieceView> pieceViewList = new ArrayList();
 
@@ -81,7 +79,7 @@ public class CellView extends JPanel {
             }
         }
 
-        ImageIcon imageIcon = new ImageIcon(resource);
+        ImageIcon imageIcon = new ImageIcon(getURL(resource));
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(CELL_WIDTH, CELL_HEIGHT, Image.SCALE_DEFAULT);
         imageIcon.setImage(image);
@@ -104,5 +102,9 @@ public class CellView extends JPanel {
 
     public Cell getCell() {
         return this.cell;
+    }
+
+    private URL getURL(String fileName) {
+        return this.getClass().getClassLoader().getResource(fileName);
     }
 }

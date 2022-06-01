@@ -1,12 +1,8 @@
-package test;
-
 import controller.cli.CLIGameController;
 
-public class CLITest {
+public class CLIRunner {
     public static void main(String args[]) {
         CLIGameController controller = new CLIGameController();
         controller.run();
-
-
     }
 }

@@ -1,9 +1,7 @@
-package test;
-
 import controller.gui.GUIGameController;
 import view.gui.display.MainFrame;
 
-public class GUITest {
+public class GUIRunner {
 
     public static void main(String args[]) {
         MainFrame view = new MainFrame();
