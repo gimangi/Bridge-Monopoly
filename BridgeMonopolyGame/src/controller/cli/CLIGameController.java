@@ -5,8 +5,6 @@ import model.domain.player.Player;
 import model.domain.rule.BridgeMonopolyGame;
 import view.cli.ConsoleManager;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;

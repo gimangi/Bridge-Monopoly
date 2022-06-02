@@ -28,7 +28,7 @@ public class Piece {
                 if (moveType == MoveType.BRIDGE && cur instanceof BridgeCell && dest instanceof BridgeCell) {
                     if (!(i+1 < dir.size()))
                         return MoveResult.FAIL;
-                    if (dir.get(i) != Direction.RIGHT)
+                    if (!cur.isMovableDir(dir.get(i), MoveType.BRIDGE))
                         return MoveResult.FAIL;
                     i++;
                     res = MoveResult.SUCCESS_BRIDGED;

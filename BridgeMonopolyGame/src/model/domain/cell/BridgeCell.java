@@ -28,7 +28,7 @@ public class BridgeCell extends Cell {
             case FORWARD:
                 return isForwardDir(dir);
             case BRIDGE:
-                if (bridgeType == START && dir == Direction.RIGHT)
+                if (bridgeType == START && dir == Direction.RIGHT || bridgeType == END && dir == Direction.LEFT)
                     return true;
         }
         return false;

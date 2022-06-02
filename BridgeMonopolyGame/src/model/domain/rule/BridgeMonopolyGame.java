@@ -28,7 +28,9 @@ public abstract class BridgeMonopolyGame {
 
     private int endPlayers = 0;
 
-    private static final ArrayList<Direction> bridgeMoveDirs = new ArrayList<>(Arrays.asList(Direction.RIGHT, Direction.RIGHT));
+    private static final ArrayList<Direction> bridgeMoveRightDirs = new ArrayList<>(Arrays.asList(Direction.RIGHT, Direction.RIGHT));
+
+    private static final ArrayList<Direction> bridgeMoveLeftDirs = new ArrayList<>(Arrays.asList(Direction.LEFT, Direction.LEFT));
 
     /*
         Decide whether to use the default map.
@@ -164,15 +166,22 @@ public abstract class BridgeMonopolyGame {
                         MoveResult moveResult = null;
 
                         // select bridge move
-                        if (curCell instanceof BridgeCell && curCell.isMovableDir(Direction.RIGHT, MoveType.BRIDGE) && (diceResult - owner.getPenalty()) >= 2) {
-                            if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
-                                moveResult = owner.move(bridgeMoveDirs, MoveType.BRIDGE);
-                                deduct = 2;
-                                refresh();
+                        if (curCell instanceof BridgeCell && (diceResult - owner.getPenalty() - deduct) >= 2) {
+                            if (curCell.isMovableDir(Direction.RIGHT, MoveType.BRIDGE)) {
+                                if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
+                                    moveResult = owner.move(bridgeMoveRightDirs, MoveType.BRIDGE);
+                                    deduct += 2;
+                                    refresh();
+                                }
+                            } else if (curCell.isMovableDir(Direction.LEFT, MoveType.BRIDGE) && turn.getAllowMoveBack()) {
+                                if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
+                                    moveResult = owner.move(bridgeMoveLeftDirs, MoveType.BRIDGE);
+                                    deduct += 2;
+                                    refresh();
+                                }
                             }
-                        }
 
-                        // TODO : 이동 가능 눈금이 0일 때 break
+                        }
 
                         // not bridge moved
                         if (moveResult == null) {
