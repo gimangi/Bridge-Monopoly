@@ -5,6 +5,8 @@ import model.domain.player.Player;
 import model.domain.rule.BridgeMonopolyGame;
 import view.cli.ConsoleManager;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -119,7 +121,7 @@ public class CLIGameController extends BridgeMonopolyGame {
     protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
         System.out.println("남은 눈금이 0이하입니다. (주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 사용한 눈금 : " + deduct + ")");
         System.out.println("다음 턴을 진행하려면 아무 키나 입력해주세요.");
-        sc.next();
+        sc.nextLine();
     }
 
     @Override
