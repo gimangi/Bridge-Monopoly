@@ -110,8 +110,6 @@ public class CLIGameController extends BridgeMonopolyGame {
             random.setSeed(System.currentTimeMillis());
             int diceResult = random.nextInt(6) + 1;
 
-            int penalty = turn.getTurnOwner().getPenalty();
-            System.out.println("주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 이동 가능 눈금 : " + (diceResult - penalty));
             return diceResult;
         };
         return call;
@@ -120,12 +118,14 @@ public class CLIGameController extends BridgeMonopolyGame {
     @Override
     protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
         System.out.println("남은 눈금이 0이하입니다. (주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 사용한 눈금 : " + deduct + ")");
-        System.out.println("다음 턴을 진행하려면 아무키나 입력해주세요.");
+        System.out.println("다음 턴을 진행하려면 아무 키나 입력해주세요.");
         sc.next();
     }
 
     @Override
     protected Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
+        int dVal = diceResult - penalty - deduct;
+        System.out.println("주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 이동 가능 눈금 : " + dVal);
         System.out.println("이동할 방향을 공백없이 순서대로 입력하세요. (위 : U, 아래 : D, 왼쪽 : L, 오른쪽 : R)");
         Callable<ArrayList<Direction>> call = () -> {
             while (true) {
@@ -133,6 +133,8 @@ public class CLIGameController extends BridgeMonopolyGame {
                 ArrayList<Direction> dirs = new ArrayList<>();
                 boolean success = true;
                 String input = sc.next();
+                if (input.length() != dVal)
+                    success = false;
 
                 for (int i = 0; i < input.length(); i++) {
                     switch (input.charAt(i)) {

@@ -3,11 +3,12 @@ package view.gui.interaction;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.URL;
 import java.util.Random;
 
 public class DiceView extends JPanel {
 
-    private static final String IMG_DICE = "." + File.separator + "res" + File.separator + "img_dice.png";
+    private static final String IMG_DICE = "img_dice.png";
 
     private int diceResult = 0;
 
@@ -17,7 +18,8 @@ public class DiceView extends JPanel {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(200, 300));
 
-        ImageIcon img = new ImageIcon(IMG_DICE);
+        URL url = getClass().getClassLoader().getResource(IMG_DICE);
+        ImageIcon img = new ImageIcon(url);
         diceBtn = new JButton(img);
         diceBtn.setPreferredSize(new Dimension(200, 200));
         JLabel text = new JLabel("주사위를 굴리세요.");

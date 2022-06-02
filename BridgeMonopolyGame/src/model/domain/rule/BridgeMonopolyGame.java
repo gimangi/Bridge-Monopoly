@@ -154,6 +154,7 @@ public abstract class BridgeMonopolyGame {
                     int deduct = 0;
 
                     while (true) {
+
                         if (diceResult - owner.getPenalty() - deduct < 1) {
                             displayMoveValueZero(diceResult, owner.getPenalty(), deduct);
                             break;
