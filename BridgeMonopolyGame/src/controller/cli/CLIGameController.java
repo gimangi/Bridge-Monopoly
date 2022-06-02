@@ -120,6 +120,8 @@ public class CLIGameController extends BridgeMonopolyGame {
     @Override
     protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
         System.out.println("남은 눈금이 0이하입니다. (주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 사용한 눈금 : " + deduct + ")");
+        System.out.println("다음 턴을 진행하려면 아무키나 입력해주세요.");
+        sc.next();
     }
 
     @Override
