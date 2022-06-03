@@ -5,55 +5,41 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Turn {
 
     private boolean allowMoveBack = true;
 
-    private boolean allPlayerEnd = false;
-
     private final ArrayList<Player> players;
 
-    private Player turnOwner;
+    private final Queue<Player> remnantQueue = new LinkedList<>();
 
-    public Turn(@NotNull ArrayList<Player> players) {
-        this.players = players;
-
-        if (!players.isEmpty())
-            turnOwner = players.get(0);
+    public Turn(@NotNull List<Player> players) {
+        this.players = new ArrayList(players);
+        this.remnantQueue.addAll(players);
     }
 
     public boolean proceedTurn() {
-        // Check that all turns are over
-        boolean allPlayerEnd = true;
-        for (Player p : players) {
-            if (p.isEnd())
-                this.allowMoveBack = false;
 
-            if (!p.isEnd())
-                allPlayerEnd = false;
-        }
-        if (allPlayerEnd) {
-            this.allPlayerEnd = true;
+        if (remnantQueue.isEmpty())
             return false;
-        }
-
-        int nextIdx = players.indexOf(turnOwner);
-
-        // not end player
-        while (true) {
-            nextIdx = (nextIdx + 1) % players.size();
-            if (!players.get(nextIdx).isEnd())
-                break;
-        }
-        turnOwner = players.get(nextIdx);
+        
+        Player prevPlayer = remnantQueue.poll();
+        if (!prevPlayer.isEnd())
+            remnantQueue.add(prevPlayer);
+        else
+            allowMoveBack = false;
+        
         return true;
     }
 
     public @Nullable Player getTurnOwner() {
-        if (this.allPlayerEnd)
+        if (remnantQueue.isEmpty())
             return null;
-        return this.turnOwner;
+        return remnantQueue.peek();
     }
 
     public boolean getAllowMoveBack() {
