@@ -4,15 +4,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.net.URL;
 
 public class PieceView extends JLabel {
 
-    private static final String DIR_RES = "." + File.separator + "res" + File.separator;
-
     public PieceView(int playerId, int width, int height) {
 
-        ImageIcon imageIcon = new ImageIcon(getIconName(playerId));
+        URL url = getClass().getClassLoader().getResource(getIconName(playerId));
+        ImageIcon imageIcon = new ImageIcon(url);
         Image image = imageIcon.getImage();
         image = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
         imageIcon.setImage(image);
@@ -22,13 +21,13 @@ public class PieceView extends JLabel {
     private @NotNull String getIconName(int playerId) {
         switch (playerId) {
             case 1:
-                return DIR_RES + "ic_player_red.png";
+                return "ic_player_red.png";
             case 2:
-                return DIR_RES + "ic_player_blue.png";
+                return "ic_player_blue.png";
             case 3:
-                return DIR_RES + "ic_player_green.png";
+                return "ic_player_green.png";
             default:
-                return DIR_RES + "ic_player_purple.png";
+                return "ic_player_purple.png";
         }
     }
 
