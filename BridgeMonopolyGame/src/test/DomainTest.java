@@ -2,7 +2,7 @@ package test;
 
 import model.data.Direction;
 import model.domain.cell.Cell;
-import model.domain.map.Board;
+import model.domain.map.Map;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
 
@@ -17,13 +17,13 @@ public class DomainTest {
     public static void main(String args[]) {
         try {
             MapDecoder decoder = new MapDecoder();
-            Board board = decoder.getBoard();
-            Cell startCell = board.getStartCell();
+            Map map = decoder.getBoard();
+            Cell startCell = map.getStartCell();
 
             testMapMove(startCell);
 
-            board.createAbsoluteMap();
-            board.printAbsoluteMap();
+            map.createAbsoluteMap();
+            map.printAbsoluteMap();
 
         } catch (Exception e) {
             e.printStackTrace();

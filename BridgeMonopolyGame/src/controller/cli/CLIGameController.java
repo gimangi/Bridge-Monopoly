@@ -78,7 +78,7 @@ public class CLIGameController extends BridgeMonopolyGame {
     protected void refresh() {
         if (!turn.getAllowMoveBack())
             System.out.println("이제부터 앞으로만 이동할 수 있습니다.");
-        ConsoleManager.printMap(board.getAbsoluteMap(), turn.getPlayerList());
+        ConsoleManager.printMap(map.getAbsoluteMap(), turn.getPlayerList());
         ConsoleManager.printLine();
         System.out.println("Player " + turn.getTurnOwner().getId() + " 님의 차례입니다. ");
         ConsoleManager.printPlayerStatus(turn.getPlayerList());

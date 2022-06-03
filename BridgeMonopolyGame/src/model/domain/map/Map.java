@@ -6,7 +6,7 @@ import model.domain.cell.Cell;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
-public class Board {
+public class Map {
 
     private final static int POS_INF = 23456789;
     private final static int NEG_INF = -23456789;

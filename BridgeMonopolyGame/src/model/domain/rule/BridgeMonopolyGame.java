@@ -6,7 +6,7 @@ import model.data.MoveType;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
-import model.domain.map.Board;
+import model.domain.map.Map;
 import model.domain.map.MapDecoder;
 import model.domain.player.Player;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ public abstract class BridgeMonopolyGame {
 
     private @Nullable MapDecoder mapDecoder;
 
-    protected Board board;
+    protected Map map;
 
     private int numOfPlayers;
 
@@ -112,21 +112,21 @@ public abstract class BridgeMonopolyGame {
                     else
                         mapDecoder = new MapDecoder();
 
-                    board = mapDecoder.getBoard();
+                    map = mapDecoder.getBoard();
                 } catch (IOException e) {
                     displayNotFoundMap();
                 }
             }
 
             // create map by absolute position
-            board.createAbsoluteMap();
+            map.createAbsoluteMap();
 
             // initialize players
             Player.clear();
             numOfPlayers = enterNumberOfPlayers().call();
             ArrayList<Player> playerList = new ArrayList<>();
             for (int i = 0; i < numOfPlayers; i++) {
-                playerList.add(Player.newInstance(board.getStartCell()));
+                playerList.add(Player.newInstance(map.getStartCell()));
             }
 
             // initialize turn

@@ -5,7 +5,6 @@ import model.data.MoveType;
 import model.data.RelativePosition;
 import org.jetbrains.annotations.Nullable;
 
-import static model.data.MoveType.ADJACENT;
 import static model.domain.cell.BridgeCell.BridgeType.END;
 import static model.domain.cell.BridgeCell.BridgeType.START;
 

@@ -75,7 +75,7 @@ public class GUIGameController extends BridgeMonopolyGame {
 
     @Override
     protected void initDisplay() {
-        mapView = new MapView(board.getAbsoluteMap());
+        mapView = new MapView(map.getAbsoluteMap());
         playerContainerView = new PlayerContainerView(turn.getPlayerList());
         mainFrame.add(mapView, BorderLayout.WEST);
         mainFrame.add(playerContainerView, BorderLayout.SOUTH);

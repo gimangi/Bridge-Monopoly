@@ -26,7 +26,7 @@ public class MapDecoder {
 
     private final BufferedReader reader;
 
-    private final Board board = new Board();
+    private final Map map = new Map();
 
     // relative position to the start cell
     private RelativePosition curPos = new RelativePosition(0, 0);
@@ -59,7 +59,7 @@ public class MapDecoder {
                 lineNum++;
             }
             linkBridge(cellList);
-            this.board.putCellList(cellList);
+            this.map.putCellList(cellList);
 
         } catch (InvalidInputException e) {
             System.out.println("Invalid input : " + e.getLine());
@@ -68,8 +68,8 @@ public class MapDecoder {
         }
     }
 
-    public Board getBoard() {
-        return this.board;
+    public Map getBoard() {
+        return this.map;
     }
 
 
@@ -82,7 +82,7 @@ public class MapDecoder {
             case "S":
                 if (curOps.length == 2) {
                     res = new ItemCell(curPos, ItemCell.ItemType.START);
-                    this.board.setStartCell(res);
+                    this.map.setStartCell(res);
                 }
                 else
                     res = new ItemCell(curPos, ItemCell.ItemType.SAW);
