@@ -7,7 +7,7 @@ import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
 import model.domain.map.Map;
-import model.domain.map.MapDecoder;
+import model.domain.map.MapReader;
 import model.domain.player.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +18,7 @@ import java.util.concurrent.Callable;
 
 public abstract class BridgeMonopolyGame {
 
-    private @Nullable MapDecoder mapDecoder;
+    private @Nullable MapReader mapDecoder;
 
     protected Map map;
 
@@ -108,11 +108,11 @@ public abstract class BridgeMonopolyGame {
             while (mapDecoder == null) {
                 try {
                     if (selectUseDefaultMap().call())
-                        mapDecoder = new MapDecoder(enterMapFile().call());
+                        mapDecoder = new MapReader(enterMapFile().call());
                     else
-                        mapDecoder = new MapDecoder();
+                        mapDecoder = new MapReader();
 
-                    map = mapDecoder.getBoard();
+                    map = mapDecoder.getMap();
                 } catch (IOException e) {
                     displayNotFoundMap();
                 }

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MapDecoder {
+public class MapReader {
 
     private final static String DIR_MAPS = "maps";
 
@@ -34,11 +34,11 @@ public class MapDecoder {
     // bridge start cell not yet connected to end
     private final ArrayList<BridgeCell> openedBridge = new ArrayList<>();
 
-    public MapDecoder() throws IOException {
+    public MapReader() throws IOException {
         this(DEFAULT_FILE);
     }
 
-    public MapDecoder(final String fileName) throws IOException {
+    public MapReader(final String fileName) throws IOException {
         this.fileName = fileName;
         reader = new BufferedReader(new FileReader("." + File.separator + DIR_MAPS + File.separator + fileName));
 
@@ -68,7 +68,7 @@ public class MapDecoder {
         }
     }
 
-    public Map getBoard() {
+    public Map getMap() {
         return this.map;
     }
 

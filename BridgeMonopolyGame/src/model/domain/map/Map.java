@@ -33,9 +33,9 @@ public class Map {
         this.cellList.addAll(list);
     }
 
-    public void createAbsoluteMap() {
+    public Cell[][] createAbsoluteMap() {
         if (cellList.isEmpty())
-            return;
+            return null;
 
         int minX = POS_INF, minY = POS_INF;
         int maxX = NEG_INF, maxY = NEG_INF;
@@ -77,26 +77,11 @@ public class Map {
             }
         }
 
-
+        return this.absoluteMap;
     }
 
     public Cell[][] getAbsoluteMap() {
         return this.absoluteMap;
     }
 
-    // for debug
-    public void printAbsoluteMap() {
-        if (absoluteMap == null)
-            return;
-
-        for (int i = 0; i < absoluteMap.length; i++) {
-            for (int j = 0; j < absoluteMap[i].length; j++) {
-                if (absoluteMap[i][j] == null)
-                    System.out.print("X");
-                else
-                    System.out.print("O");
-            }
-            System.out.println();
-        }
-    }
 }
