@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 
-public abstract class BridgeMonopolyGame {
+public abstract class GameService {
 
     private @Nullable MapReader mapDecoder;
 

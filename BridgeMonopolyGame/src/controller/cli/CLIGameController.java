@@ -2,15 +2,16 @@ package controller.cli;
 
 import model.data.Direction;
 import model.domain.player.Player;
-import model.domain.rule.BridgeMonopolyGame;
+import model.domain.rule.GameService;
 import view.cli.ConsoleManager;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
-public class CLIGameController extends BridgeMonopolyGame {
+public class CLIGameController extends GameService {
 
     private final Scanner sc = new Scanner(System.in);
 

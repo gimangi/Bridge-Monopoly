@@ -2,7 +2,7 @@ package controller.gui;
 
 import model.data.Direction;
 import model.domain.player.Player;
-import model.domain.rule.BridgeMonopolyGame;
+import model.domain.rule.GameService;
 import org.jetbrains.annotations.NotNull;
 import view.gui.interaction.CombDirView;
 import view.gui.interaction.DiceView;
@@ -13,10 +13,12 @@ import view.gui.display.PlayerContainerView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-public class GUIGameController extends BridgeMonopolyGame {
+public class GUIGameController extends GameService {
 
     private final MainFrame mainFrame;
 
