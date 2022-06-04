@@ -3,6 +3,8 @@ package model.domain.map;
 import model.data.RelativePosition;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +85,14 @@ public class Map {
 
     public Cell[][] getAbsoluteMap() {
         return this.absoluteMap;
+    }
+
+    public @Nullable Cell getCellByPos(RelativePosition pos) {
+        for (Cell cell : cellList) {
+            if (cell.getPosition().equals(pos))
+                return cell;
+        }
+        return null;
     }
 
 }

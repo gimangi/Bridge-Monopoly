@@ -42,4 +42,12 @@ public class RelativePosition {
         return "(" + this.mPosX + ", " + this.mPosY + ")";
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof RelativePosition) {
+            return this.getX() == ((RelativePosition) other).getX() && this.getY() == ((RelativePosition) other).getY();
+        }
+        return false;
+    }
+
 }

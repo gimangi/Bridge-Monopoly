@@ -12,9 +12,8 @@ public class InvalidInputException extends Exception {
         return this.line;
     }
 
-    @Override
-    public String toString() {
-        return "Invalid input : " + line;
+    public void print() {
+        System.out.println("Invalid input : " + line);
     }
 
 }

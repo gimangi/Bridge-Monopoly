@@ -8,6 +8,7 @@ import model.domain.cell.ItemCell;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
 
@@ -41,7 +42,7 @@ public class Player {
         return this.id;
     }
 
-    public MoveResult move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
+    public MoveResult move(@NotNull final List<Direction> dir, MoveType moveType) {
         MoveResult moved =  piece.move(dir, moveType);
 
         // when moved

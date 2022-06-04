@@ -14,8 +14,7 @@ public class BridgeNotFoundException extends Exception {
         return this.cell;
     }
 
-    @Override
-    public String toString() {
-        return "The bridge cell to connect to does not exist in cell " + cell.toString();
+    public void print() {
+        System.out.println("The bridge cell to connect to does not exist in cell " + cell.toString());
     }
 }

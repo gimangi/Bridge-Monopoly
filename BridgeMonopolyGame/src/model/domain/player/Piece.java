@@ -8,6 +8,7 @@ import model.domain.cell.Cell;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Piece {
 
@@ -17,7 +18,7 @@ public class Piece {
         this.curCell = startCell;
     }
 
-    public MoveResult move(@NotNull final ArrayList<Direction> dir, MoveType moveType) {
+    public MoveResult move(@NotNull final List<Direction> dir, MoveType moveType) {
         Cell cur = curCell;
         MoveResult res = MoveResult.SUCCESS;
 

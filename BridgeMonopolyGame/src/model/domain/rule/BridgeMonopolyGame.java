@@ -118,9 +118,9 @@ public abstract class BridgeMonopolyGame {
                 } catch (IOException e) {
                     displayNotFoundMap();
                 } catch (InvalidInputException e) {
-                    System.out.println(e);
+                    e.print();
                 } catch (BridgeNotFoundException e) {
-                    System.out.println(e);
+                    e.print();
                 }
             }
 
