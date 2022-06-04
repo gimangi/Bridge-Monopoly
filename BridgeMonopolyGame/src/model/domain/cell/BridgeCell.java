@@ -41,6 +41,11 @@ public class BridgeCell extends Cell {
         return this.adjacentSet.get(dir);
     }
 
+    @Override
+    public String toString() {
+        return bridgeType + " " + position.toString();
+    }
+
     public void setConnectedCell(Cell cell) {
         this.connectedCell = cell;
     }

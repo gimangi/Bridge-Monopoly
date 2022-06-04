@@ -15,8 +15,6 @@ public class MapReadTest {
                 MapReader reader = new MapReader(name);
                 Map map = reader.getMap();
 
-                map.createAbsoluteMap();
-
                 System.out.println("Map test pass " + ++cnt + " / " + TEST_MAPS.length);
             } catch (Exception e) {
                 System.out.println("Map test failed at " + name);

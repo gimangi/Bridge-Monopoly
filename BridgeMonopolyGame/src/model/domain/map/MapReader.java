@@ -22,11 +22,11 @@ public class MapReader {
 
     private final static String DEFAULT_FILE = "default.map";
 
-    private final String fileName;
-
     private final BufferedReader reader;
 
-    private final Map map = new Map();
+    private final Map map;
+
+    private Cell startCell;
 
     // relative position to the start cell
     private RelativePosition curPos = new RelativePosition(0, 0);
@@ -34,38 +34,29 @@ public class MapReader {
     // bridge start cell not yet connected to end
     private final ArrayList<BridgeCell> openedBridge = new ArrayList<>();
 
-    public MapReader() throws IOException {
+    public MapReader() throws IOException, InvalidInputException, BridgeNotFoundException {
         this(DEFAULT_FILE);
     }
 
-    public MapReader(final String fileName) throws IOException {
-        this.fileName = fileName;
+    public MapReader(final String fileName) throws IOException, InvalidInputException, BridgeNotFoundException {
         reader = new BufferedReader(new FileReader("." + File.separator + DIR_MAPS + File.separator + fileName));
 
-        int lineNum = 1;
         String curLine = "";
         String prevLine = "";
         Cell prevCell = null;
         ArrayList<Cell> cellList = new ArrayList<>();
 
-        try {
-            // read all line
-            while ((curLine = reader.readLine()) != null) {
-                Cell cell = newCell(curLine, prevLine, prevCell);
-                cellList.add(cell);
-                prevLine = curLine;
-                prevCell = cell;
-
-                lineNum++;
-            }
-            linkBridge(cellList);
-            this.map.putCellList(cellList);
-
-        } catch (InvalidInputException e) {
-            System.out.println("Invalid input : " + e.getLine());
-        } catch (BridgeNotFoundException e) {
-            System.out.println("The bridge cell to connect to does not exist in line " + lineNum + " : " + curLine);
+        // read all line
+        while ((curLine = reader.readLine()) != null) {
+            Cell cell = newCell(curLine, prevLine, prevCell);
+            cellList.add(cell);
+            prevLine = curLine;
+            prevCell = cell;
         }
+        this.map = new Map(cellList);
+        this.map.setStartCell(startCell);
+
+        linkBridge(cellList);
     }
 
     public Map getMap() {
@@ -73,7 +64,7 @@ public class MapReader {
     }
 
 
-    private Cell newCell(String curLine, String prevLine, @Nullable Cell prevCell) throws InvalidInputException, BridgeNotFoundException {
+    private Cell newCell(String curLine, String prevLine, @Nullable Cell prevCell) throws InvalidInputException {
         Cell res;
         String[] curOps = curLine.split(" ");
         String[] prevOps = prevLine.split(" ");
@@ -82,7 +73,7 @@ public class MapReader {
             case "S":
                 if (curOps.length == 2) {
                     res = new ItemCell(curPos, ItemCell.ItemType.START);
-                    this.map.setStartCell(res);
+                    this.startCell = res;
                 }
                 else
                     res = new ItemCell(curPos, ItemCell.ItemType.SAW);
@@ -131,9 +122,11 @@ public class MapReader {
         return res;
     }
 
-    private void linkBridge(ArrayList<Cell> cellList) {
+    private void linkBridge(ArrayList<Cell> cellList) throws BridgeNotFoundException {
         for (Cell c : cellList) {
             if (c instanceof BridgeCell && ((BridgeCell) c).getBridgeType() == BridgeCell.BridgeType.END) {
+
+                boolean close = false;
 
                 for (Iterator<BridgeCell> iter = openedBridge.iterator(); iter.hasNext();) {
                     BridgeCell opened = iter.next();
@@ -144,8 +137,12 @@ public class MapReader {
                         ((BridgeCell) c).setConnectedCell(opened);
                         opened.setConnectedCell(c);
                         iter.remove();
+                        close = true;
                     }
                 }
+
+                if (!close)
+                    throw new BridgeNotFoundException((BridgeCell) c);
             }
         }
     }

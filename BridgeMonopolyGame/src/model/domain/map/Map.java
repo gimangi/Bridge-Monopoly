@@ -3,8 +3,8 @@ package model.domain.map;
 import model.data.RelativePosition;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
-import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
 
@@ -29,13 +29,15 @@ public class Map {
         this.startCell = cell;
     }
 
-    public void putCellList(@NotNull ArrayList<Cell> list) {
-        this.cellList.addAll(list);
+    public Map(final List<Cell> cellList) {
+        this.cellList.addAll(cellList);
+
+        createAbsoluteMap();
     }
 
-    public Cell[][] createAbsoluteMap() {
+    private void createAbsoluteMap() {
         if (cellList.isEmpty())
-            return null;
+            return;
 
         int minX = POS_INF, minY = POS_INF;
         int maxX = NEG_INF, maxY = NEG_INF;
@@ -77,7 +79,6 @@ public class Map {
             }
         }
 
-        return this.absoluteMap;
     }
 
     public Cell[][] getAbsoluteMap() {

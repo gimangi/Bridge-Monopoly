@@ -12,4 +12,9 @@ public class InvalidInputException extends Exception {
         return this.line;
     }
 
+    @Override
+    public String toString() {
+        return "Invalid input : " + line;
+    }
+
 }

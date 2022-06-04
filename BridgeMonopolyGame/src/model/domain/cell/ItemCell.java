@@ -36,6 +36,11 @@ public class ItemCell extends Cell {
         return this.adjacentSet.get(dir);
     }
 
+    @Override
+    public String toString() {
+        return itemType + " " + position.toString();
+    }
+
     public int getPoint() {
         switch (itemType) {
             case HAMMER:

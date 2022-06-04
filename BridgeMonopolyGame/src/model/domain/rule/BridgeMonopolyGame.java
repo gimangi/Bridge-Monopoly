@@ -9,6 +9,8 @@ import model.domain.cell.ItemCell;
 import model.domain.map.Map;
 import model.domain.map.MapReader;
 import model.domain.player.Player;
+import model.exception.BridgeNotFoundException;
+import model.exception.InvalidInputException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -115,11 +117,14 @@ public abstract class BridgeMonopolyGame {
                     map = mapDecoder.getMap();
                 } catch (IOException e) {
                     displayNotFoundMap();
+                } catch (InvalidInputException e) {
+                    System.out.println(e);
+                } catch (BridgeNotFoundException e) {
+                    System.out.println(e);
                 }
             }
 
             // create map by absolute position
-            map.createAbsoluteMap();
 
             // initialize players
             Player.clear();
