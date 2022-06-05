@@ -1,8 +1,10 @@
 package controller.gui;
 
 import model.data.Direction;
+import model.domain.map.Map;
 import model.domain.player.Player;
-import model.domain.rule.GameService;
+import model.domain.rule.Turn;
+import model.service.GameService;
 import org.jetbrains.annotations.NotNull;
 import view.gui.interaction.CombDirView;
 import view.gui.interaction.DiceView;
@@ -13,12 +15,10 @@ import view.gui.display.PlayerContainerView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-public class GUIGameController extends GameService {
+public class GUIGameController implements GameService {
 
     private final MainFrame mainFrame;
 
@@ -31,7 +31,7 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Boolean> selectUseDefaultMap() {
+    public Callable<Boolean> selectUseDefaultMap() {
         Callable<Boolean> call = () -> {
             String option[] = new String[]{"맵 파일을 직접 선택", "기본 맵을 사용"};
             int answer = JOptionPane.showOptionDialog(null, "맵 파일을 불러올 방법을 선택해주세요.", "맵 선택", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, null);
@@ -43,18 +43,18 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected Callable<String> enterMapFile() {
+    public Callable<String> enterMapFile() {
         Callable<String> call = () -> JOptionPane.showInputDialog("사용할 맵 파일 이름을 입력해주세요.");
         return call;
     }
 
     @Override
-    protected void displayNotFoundMap() {
+    public void displayNotFoundMap() {
         JOptionPane.showMessageDialog(null, "파일이 존재하지 않습니다.", "File not found", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    protected Callable<Integer> enterNumberOfPlayers() {
+    public Callable<Integer> enterNumberOfPlayers() {
 
         Callable<Integer> call = () -> {
             while (true) {
@@ -76,7 +76,7 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected void initDisplay() {
+    public void initDisplay(Map map, Turn turn) {
         mapView = new MapView(map.getAbsoluteMap());
         playerContainerView = new PlayerContainerView(turn.getPlayerList());
         mainFrame.add(mapView, BorderLayout.WEST);
@@ -85,7 +85,7 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected void refresh() {
+    public void refresh(Map map, Turn turn) {
         playerContainerView.setTurnOwner(turn.getTurnOwner());
         playerContainerView.updatePlayerStatus(turn.getPlayerList());
 
@@ -99,12 +99,12 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Boolean> selectStay(int playerId) {
+    public Callable<Boolean> selectStay(int playerId) {
 
         WaitCall<Boolean> call = new WaitCall() {
             @Override
-            public Boolean call() throws Exception {
-                SelectStayView selectView = new SelectStayView(turn.getTurnOwner().getId());
+            public Boolean call() {
+                SelectStayView selectView = new SelectStayView(playerId);
                 mainFrame.add(selectView, BorderLayout.EAST);
                 updateMainFrame();
 
@@ -129,7 +129,7 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Integer> rollDice() {
+    public Callable<Integer> rollDice() {
 
         WaitCall<Integer> call = new WaitCall<Integer>() {
             @Override
@@ -154,12 +154,12 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
+    public void displayMoveValueZero(int diceResult, int penalty, int deduct) {
         JOptionPane.showMessageDialog(null, "주사위 결과 : " + diceResult + " 패널티 : " + penalty + " 사용한 눈금 : " + deduct + "\n남은 눈금이 0이하입니다.", "Can not move", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
-    protected @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
+    public @NotNull Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
 
         WaitCall<ArrayList<Direction>> call = new WaitCall<ArrayList<Direction>>() {
             @Override
@@ -209,7 +209,7 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct) {
+    public Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct) {
         Callable<Boolean> call = () -> {
             CombDirView dirView = new CombDirView(diceResult, penalty, deduct);
             mainFrame.add(dirView);
@@ -227,19 +227,19 @@ public class GUIGameController extends GameService {
     }
 
     @Override
-    protected void alertInvalidMove() {
+    public void alertInvalidMove() {
         JOptionPane.showMessageDialog(null, "해당 방향으로 이동할 수 없습니다.", "Can not move", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    protected void displayCanNotMoveBack() {
+    public void displayCanNotMoveBack() {
         JLabel textLabel = new JLabel("이제부터 앞으로만 이동할 수 있습니다.");
         textLabel.setFont(new Font("Arial", Font.BOLD, 25));
         mainFrame.add(textLabel, BorderLayout.NORTH);
     }
 
     @Override
-    protected void displayWinner() {
+    public void displayWinner(Turn turn) {
         Player winner = turn.getWinner();
         JOptionPane.showMessageDialog(null, "게임이 종료되었습니다.\n승리 : Player" + winner.getId() + "\n획득한 점수 : " + winner.getPoint(), "Game end", JOptionPane.ERROR_MESSAGE);
     }
@@ -247,6 +247,27 @@ public class GUIGameController extends GameService {
     private void updateMainFrame() {
         mainFrame.revalidate();
         mainFrame.repaint();
+    }
+
+    public abstract static class WaitCall<T> implements Callable<T> {
+        protected T result;
+
+        public void signalResult(T result) {
+            synchronized (this) {
+                this.result = result;
+                notify();
+            }
+        }
+
+        public void waitResult() {
+            try {
+                synchronized (this) {
+                    wait();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

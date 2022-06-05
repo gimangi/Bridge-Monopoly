@@ -1,22 +1,20 @@
 package controller.cli;
 
 import model.data.Direction;
+import model.domain.map.Map;
 import model.domain.player.Player;
-import model.domain.rule.GameService;
+import model.domain.rule.Turn;
+import model.service.GameService;
 import view.cli.ConsoleManager;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
 
-public class CLIGameController extends GameService {
-
-    private final Scanner sc = new Scanner(System.in);
+public class CLIGameController implements GameService {
 
     @Override
-    protected Callable<Boolean> selectUseDefaultMap() {
+    public Callable<Boolean> selectUseDefaultMap() {
         Callable<Boolean> call = () -> {
             System.out.println("맵 파일을 불러올 방법을 선택해주세요.\n맵 파일을 직접 선택 : 1 / 기본 맵을 사용 : 2");
             int answer;
@@ -32,21 +30,21 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected Callable<String> enterMapFile() {
+    public Callable<String> enterMapFile() {
         Callable<String> call = () -> {
             System.out.println("사용할 맵 파일의 이름을 입력해주세요.");
-            return sc.next();
+            return ConsoleManager.next();
         };
         return call;
     }
 
     @Override
-    protected void displayNotFoundMap() {
+    public void displayNotFoundMap() {
         System.out.println("파일이 존재하지 않습니다.");
     }
 
     @Override
-    protected Callable<Integer> enterNumberOfPlayers() {
+    public Callable<Integer> enterNumberOfPlayers() {
         Callable<Integer> call = () -> {
             System.out.println("플레이어 수를 입력해주세요. (2 ~ 4)");
             int res;
@@ -62,7 +60,7 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected void initDisplay() {
+    public void initDisplay(Map map, Turn turn) {
         // Displays a message for 2 seconds.
         ConsoleManager.printSplash();
 
@@ -76,7 +74,7 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected void refresh() {
+    public void refresh(Map map, Turn turn) {
         if (!turn.getAllowMoveBack())
             System.out.println("이제부터 앞으로만 이동할 수 있습니다.");
         ConsoleManager.printMap(map.getAbsoluteMap(), turn.getPlayerList());
@@ -87,7 +85,7 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Boolean> selectStay(int playerId) {
+    public Callable<Boolean> selectStay(int playerId) {
         Callable<Boolean> call = () -> {
             System.out.println("턴을 쉬어갈지, 주사위를 굴릴지 선택하세요.\n쉬어가기 : 1, 주사위 굴리기 : 2");
 
@@ -105,7 +103,7 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Integer> rollDice() {
+    public Callable<Integer> rollDice() {
         Callable<Integer> call = () -> {
             Random random = new Random();
             random.setSeed(System.currentTimeMillis());
@@ -117,14 +115,14 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected void displayMoveValueZero(int diceResult, int penalty, int deduct) {
+    public void displayMoveValueZero(int diceResult, int penalty, int deduct) {
         System.out.println("남은 눈금이 0이하입니다. (주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 사용한 눈금 : " + deduct + ")");
         System.out.println("다음 턴을 진행하려면 아무 키나 입력해주세요.");
-        sc.nextLine();
+        ConsoleManager.nextLine();
     }
 
     @Override
-    protected Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
+    public Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct) {
         int dVal = diceResult - penalty - deduct;
         System.out.println("주사위 결과 : " + diceResult + ", 패널티 : " + penalty + ", 이동 가능 눈금 : " + dVal);
         System.out.println("이동할 방향을 공백없이 순서대로 입력하세요. (위 : U, 아래 : D, 왼쪽 : L, 오른쪽 : R)");
@@ -133,7 +131,7 @@ public class CLIGameController extends GameService {
 
                 ArrayList<Direction> dirs = new ArrayList<>();
                 boolean success = true;
-                String input = sc.next();
+                String input = ConsoleManager.next();
                 if (input.length() != dVal)
                     success = false;
 
@@ -167,7 +165,7 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct) {
+    public Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct) {
         Callable<Boolean> call = () -> {
             System.out.println("다리로 이동하시겠습니까? (penalty가 증가합니다) \n다리로 이동 : 1, 그냥 진행 : 2");
             while (true) {
@@ -182,17 +180,17 @@ public class CLIGameController extends GameService {
     }
 
     @Override
-    protected void alertInvalidMove() {
+    public void alertInvalidMove() {
         System.out.println("해당 방향으로 이동할 수 없습니다.");
     }
 
     @Override
-    protected void displayCanNotMoveBack() {
+    public void displayCanNotMoveBack() {
         // TO NOTHING
     }
 
     @Override
-    protected void displayWinner() {
+    public void displayWinner(Turn turn) {
         Player winner = turn.getWinner();
         System.out.println("게임이 종료되었습니다.");
         System.out.println("승리 : Player" + winner.getId());
@@ -200,10 +198,10 @@ public class CLIGameController extends GameService {
     }
 
     private int scanInteger() {
-        while (!sc.hasNextInt()) {
-            sc.next();
+        while (!ConsoleManager.hasNextInt()) {
+            ConsoleManager.next();
             System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
         }
-        return sc.nextInt();
+        return ConsoleManager.nextInt();
     }
 }

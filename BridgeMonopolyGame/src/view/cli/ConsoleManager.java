@@ -7,8 +7,11 @@ import model.domain.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ConsoleManager {
+
+    private final static Scanner sc = new Scanner(System.in);
 
     public static void printSplash() {
         System.out.println("\n" +
@@ -107,6 +110,23 @@ public class ConsoleManager {
     public static void printLine() {
         System.out.println("───────────────────────────────────────────────────────────────────────────────────");
     }
+
+    public static String nextLine() {
+        return sc.nextLine();
+    }
+
+    public static String next() {
+        return sc.next();
+    }
+
+    public static boolean hasNextInt() {
+        return sc.hasNextInt();
+    }
+
+    public static int nextInt() {
+        return sc.nextInt();
+    }
+
 
     // Find cell name
     private static String getCellName(@NotNull Cell cell) {

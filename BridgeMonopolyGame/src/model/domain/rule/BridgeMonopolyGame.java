@@ -11,14 +11,16 @@ import model.domain.map.MapReader;
 import model.domain.player.Player;
 import model.exception.BridgeNotFoundException;
 import model.exception.InvalidInputException;
+import model.service.GameService;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 
-public abstract class GameService {
+public class BridgeMonopolyGame {
+
+    private final GameService service;
 
     private @Nullable MapReader mapDecoder;
 
@@ -34,74 +36,10 @@ public abstract class GameService {
 
     private static final ArrayList<Direction> bridgeMoveLeftDirs = new ArrayList<>(Arrays.asList(Direction.LEFT, Direction.LEFT));
 
-    /*
-        Decide whether to use the default map.
-     */
-    protected abstract Callable<Boolean> selectUseDefaultMap();
-    /*
-        Select map file name.
-     */
-    protected abstract Callable<String> enterMapFile();
+    public BridgeMonopolyGame(GameService service) {
+        this.service = service;
+    }
 
-    /*
-        It outputs that the input file does not exist and proceeds to the default map.
-     */
-    protected abstract void displayNotFoundMap();
-
-    /*
-        Input the number of players to play the game.
-     */
-    protected abstract Callable<Integer> enterNumberOfPlayers();
-
-
-    /*
-        Initializes the elements of the screen.
-     */
-    protected abstract void initDisplay();
-
-    protected abstract void refresh();
-
-    /*
-        The player chooses whether to rest or roll the dice for that turn.
-     */
-    protected abstract Callable<Boolean> selectStay(int playerId);
-
-    /*
-        The dice are rolled based on the player's input.
-     */
-    protected abstract Callable<Integer> rollDice();
-
-    /*
-        Display that there are no movable scales
-     */
-    protected abstract void displayMoveValueZero(int diceResult, int penalty, int deduct);
-
-    /*
-        Displays the result of the dice and receives the input direction to move.
-     */
-    protected abstract Callable<ArrayList<Direction>> enterDirection(int diceResult, int penalty, int deduct);
-
-    /*
-        If player are on a bridge cell, player can choose whether to move to the bridge or not.
-     */
-    protected abstract Callable<Boolean> selectMoveBridge(int diceResult, int penalty, int deduct);
-
-
-    /*
-        Alert that the direction cannot be moved.
-     */
-    protected abstract void alertInvalidMove();
-
-    /*
-        Display that you cannot move backwards
-     */
-    protected abstract void displayCanNotMoveBack();
-
-
-    /*
-        Display the winner
-     */
-    protected abstract void displayWinner();
 
     public void run() {
 
@@ -109,14 +47,14 @@ public abstract class GameService {
 
             while (mapDecoder == null) {
                 try {
-                    if (selectUseDefaultMap().call())
-                        mapDecoder = new MapReader(enterMapFile().call());
+                    if (service.selectUseDefaultMap().call())
+                        mapDecoder = new MapReader(service.enterMapFile().call());
                     else
                         mapDecoder = new MapReader();
 
                     map = mapDecoder.getMap();
                 } catch (IOException e) {
-                    displayNotFoundMap();
+                    service.displayNotFoundMap();
                 } catch (InvalidInputException e) {
                     e.print();
                 } catch (BridgeNotFoundException e) {
@@ -128,7 +66,7 @@ public abstract class GameService {
 
             // initialize players
             Player.clear();
-            numOfPlayers = enterNumberOfPlayers().call();
+            numOfPlayers = service.enterNumberOfPlayers().call();
             ArrayList<Player> playerList = new ArrayList<>();
             for (int i = 0; i < numOfPlayers; i++) {
                 playerList.add(Player.newInstance(map.getStartCell()));
@@ -137,15 +75,15 @@ public abstract class GameService {
             // initialize turn
             turn = new Turn(playerList);
 
-            initDisplay();
+            service.initDisplay(map, turn);
 
             // run turn
             Player owner;
             while (numOfPlayers - endPlayers > 1) {
                 owner = turn.getTurnOwner();
-                refresh();
+                service.refresh(map, turn);
 
-                boolean stay = selectStay(owner.getId()).call();
+                boolean stay = service.selectStay(owner.getId()).call();
 
                 // stay turn
                 if (stay) {
@@ -154,7 +92,7 @@ public abstract class GameService {
                 // move turn
                 else {
                     // roll dice
-                    int diceResult = rollDice().call();
+                    int diceResult = service.rollDice().call();
                     // combine direction
                     ArrayList<Direction> dirs;
 
@@ -163,7 +101,7 @@ public abstract class GameService {
                     while (true) {
 
                         if (diceResult - owner.getPenalty() - deduct < 1) {
-                            displayMoveValueZero(diceResult, owner.getPenalty(), deduct);
+                            service.displayMoveValueZero(diceResult, owner.getPenalty(), deduct);
                             break;
                         }
 
@@ -173,16 +111,16 @@ public abstract class GameService {
                         // select bridge move
                         if (curCell instanceof BridgeCell && (diceResult - owner.getPenalty() - deduct) >= 2) {
                             if (curCell.isMovableDir(Direction.RIGHT, MoveType.BRIDGE)) {
-                                if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
+                                if (service.selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
                                     moveResult = owner.move(bridgeMoveRightDirs, MoveType.BRIDGE);
                                     deduct += 2;
-                                    refresh();
+                                    service.refresh(map, turn);
                                 }
                             } else if (curCell.isMovableDir(Direction.LEFT, MoveType.BRIDGE) && turn.getAllowMoveBack()) {
-                                if (selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
+                                if (service.selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
                                     moveResult = owner.move(bridgeMoveLeftDirs, MoveType.BRIDGE);
                                     deduct += 2;
-                                    refresh();
+                                    service.refresh(map, turn);
                                 }
                             }
 
@@ -190,7 +128,7 @@ public abstract class GameService {
 
                         // not bridge moved
                         if (moveResult == null) {
-                            dirs = enterDirection(diceResult, owner.getPenalty(), deduct).call();
+                            dirs = service.enterDirection(diceResult, owner.getPenalty(), deduct).call();
                             MoveType moveType = MoveType.ADJACENT;
 
                             // not allow move back
@@ -212,7 +150,7 @@ public abstract class GameService {
                             // player end
                             if (owner.isEnd()) {
                                 if (endPlayers == 0) {
-                                    displayCanNotMoveBack();
+                                    service.displayCanNotMoveBack();
                                     owner.addPoint(7);
                                 }
                                 else if (endPlayers == 1)
@@ -230,38 +168,17 @@ public abstract class GameService {
                         }
                         // can not move
                         else
-                            alertInvalidMove();
+                            service.alertInvalidMove();
 
                     }
 
                 }
                 turn.proceedTurn();
             }
-            refresh();
-            displayWinner();
+            service.refresh(map, turn);
+            service.displayWinner(turn);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public abstract static class WaitCall<T> implements Callable<T> {
-        protected T result;
-
-        public void signalResult(T result) {
-            synchronized (this) {
-                this.result = result;
-                notify();
-            }
-        }
-
-        public void waitResult() {
-            try {
-                synchronized (this) {
-                    wait();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
