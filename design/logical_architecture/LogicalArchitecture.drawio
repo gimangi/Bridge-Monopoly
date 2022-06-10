@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-06-09T21:55:03.588Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" etag="-Ak3y89MHaT6NO5oENMt" version="19.0.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-06-10T06:19:29.450Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" etag="KRr-lYBM0ZmlODXCtUy6" version="19.0.0" type="github">
   <diagram id="XL85ZpH-lZTcS-LXKkXV" name="Page-1">
-    <mxGraphModel dx="2593" dy="126" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1240" dy="-550" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -91,12 +91,12 @@
         <mxCell id="MvgsRrPuVLWL3fnCKC9J-33" value="player" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" vertex="1" parent="CUaEXW2MeiCxrPyKnSSO-9">
           <mxGeometry x="450" y="56" width="180" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="MvgsRrPuVLWL3fnCKC9J-34" value="Map" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-33">
+        <mxCell id="MvgsRrPuVLWL3fnCKC9J-34" value="Piece" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-33">
           <mxGeometry width="110" height="30" relative="1" as="geometry">
             <mxPoint x="35" y="64" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="MvgsRrPuVLWL3fnCKC9J-35" value="MapReader" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-33">
+        <mxCell id="MvgsRrPuVLWL3fnCKC9J-35" value="Player" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-33">
           <mxGeometry width="110" height="30" relative="1" as="geometry">
             <mxPoint x="35" y="134" as="offset" />
           </mxGeometry>
@@ -104,14 +104,14 @@
         <mxCell id="MvgsRrPuVLWL3fnCKC9J-36" value="rule" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" vertex="1" parent="CUaEXW2MeiCxrPyKnSSO-9">
           <mxGeometry x="660" y="56" width="180" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="MvgsRrPuVLWL3fnCKC9J-37" value="Map" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-36">
+        <mxCell id="MvgsRrPuVLWL3fnCKC9J-37" value="Turn" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-36">
           <mxGeometry width="110" height="30" relative="1" as="geometry">
             <mxPoint x="35" y="64" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="MvgsRrPuVLWL3fnCKC9J-38" value="MapReader" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-36">
-          <mxGeometry width="110" height="30" relative="1" as="geometry">
-            <mxPoint x="35" y="134" as="offset" />
+        <mxCell id="MvgsRrPuVLWL3fnCKC9J-38" value="BridgeMonopolyGame" style="html=1;" vertex="1" parent="MvgsRrPuVLWL3fnCKC9J-36">
+          <mxGeometry width="130" height="30" relative="1" as="geometry">
+            <mxPoint x="27" y="134" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="CUaEXW2MeiCxrPyKnSSO-11" value="data" style="shape=folder;fontStyle=1;tabWidth=110;tabHeight=30;tabPosition=left;html=1;boundedLbl=1;labelInHeader=1;container=1;collapsible=0;recursiveResize=0;" parent="CUaEXW2MeiCxrPyKnSSO-3" vertex="1">
