@@ -22,19 +22,15 @@ public class BridgeMonopolyGame {
 
     private final GameService service;
 
-    private @Nullable MapReader mapDecoder;
+    private @Nullable MapReader mapReader;
 
-    protected Map map;
+    private Map map;
 
-    private int numOfPlayers;
+    private Turn turn;
 
-    protected Turn turn;
+    private static final ArrayList<Direction> BRIDGE_MOVE_RIGHT_DIRS = new ArrayList<>(Arrays.asList(Direction.RIGHT, Direction.RIGHT));
 
-    private int endPlayers = 0;
-
-    private static final ArrayList<Direction> bridgeMoveRightDirs = new ArrayList<>(Arrays.asList(Direction.RIGHT, Direction.RIGHT));
-
-    private static final ArrayList<Direction> bridgeMoveLeftDirs = new ArrayList<>(Arrays.asList(Direction.LEFT, Direction.LEFT));
+    private static final ArrayList<Direction> BRIDGE_MOVE_LEFT_DIRS = new ArrayList<>(Arrays.asList(Direction.LEFT, Direction.LEFT));
 
     public BridgeMonopolyGame(GameService service) {
         this.service = service;
@@ -45,14 +41,14 @@ public class BridgeMonopolyGame {
 
         try {
 
-            while (mapDecoder == null) {
+            while (mapReader == null) {
                 try {
                     if (service.selectUseDefaultMap().call())
-                        mapDecoder = new MapReader(service.enterMapFile().call());
+                        mapReader = new MapReader(service.enterMapFile().call());
                     else
-                        mapDecoder = new MapReader();
+                        mapReader = new MapReader();
 
-                    map = mapDecoder.getMap();
+                    map = mapReader.getMap();
                 } catch (IOException e) {
                     service.displayNotFoundMap();
                 } catch (InvalidInputException e) {
@@ -66,7 +62,7 @@ public class BridgeMonopolyGame {
 
             // initialize players
             Player.clear();
-            numOfPlayers = service.enterNumberOfPlayers().call();
+            int numOfPlayers = service.enterNumberOfPlayers().call();
             ArrayList<Player> playerList = new ArrayList<>();
             for (int i = 0; i < numOfPlayers; i++) {
                 playerList.add(Player.newInstance(map.getStartCell()));
@@ -79,7 +75,7 @@ public class BridgeMonopolyGame {
 
             // run turn
             Player owner;
-            while (numOfPlayers - endPlayers > 1) {
+            while (numOfPlayers - turn.getEndPlayers() > 1) {
                 owner = turn.getTurnOwner();
                 service.refresh(map, turn);
 
@@ -112,13 +108,13 @@ public class BridgeMonopolyGame {
                         if (curCell instanceof BridgeCell && (diceResult - owner.getPenalty() - deduct) >= 2) {
                             if (curCell.isMovableDir(Direction.RIGHT, MoveType.BRIDGE)) {
                                 if (service.selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
-                                    moveResult = owner.move(bridgeMoveRightDirs, MoveType.BRIDGE);
+                                    moveResult = owner.move(BRIDGE_MOVE_RIGHT_DIRS, MoveType.BRIDGE);
                                     deduct += 2;
                                     service.refresh(map, turn);
                                 }
                             } else if (curCell.isMovableDir(Direction.LEFT, MoveType.BRIDGE) && turn.getAllowMoveBack()) {
                                 if (service.selectMoveBridge(diceResult, owner.getPenalty(), deduct).call()) {
-                                    moveResult = owner.move(bridgeMoveLeftDirs, MoveType.BRIDGE);
+                                    moveResult = owner.move(BRIDGE_MOVE_LEFT_DIRS, MoveType.BRIDGE);
                                     deduct += 2;
                                     service.refresh(map, turn);
                                 }
@@ -149,6 +145,8 @@ public class BridgeMonopolyGame {
 
                             // player end
                             if (owner.isEnd()) {
+                                int endPlayers = turn.getEndPlayers();
+
                                 if (endPlayers == 0) {
                                     service.displayCanNotMoveBack();
                                     owner.addPoint(7);
@@ -157,7 +155,6 @@ public class BridgeMonopolyGame {
                                     owner.addPoint(3);
                                 else if (endPlayers == 2)
                                     owner.addPoint(1);
-                                endPlayers++;
                             }
 
                             // get penalty

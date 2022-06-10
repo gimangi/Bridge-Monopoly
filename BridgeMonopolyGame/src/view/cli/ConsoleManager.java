@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class ConsoleManager {
 
-    private final static Scanner sc = new Scanner(System.in);
+    private final static Scanner SCANNER = new Scanner(System.in);
 
     public static void printSplash() {
         System.out.println("\n" +
@@ -112,19 +112,19 @@ public class ConsoleManager {
     }
 
     public static String nextLine() {
-        return sc.nextLine();
+        return SCANNER.nextLine();
     }
 
     public static String next() {
-        return sc.next();
+        return SCANNER.next();
     }
 
     public static boolean hasNextInt() {
-        return sc.hasNextInt();
+        return SCANNER.hasNextInt();
     }
 
     public static int nextInt() {
-        return sc.nextInt();
+        return SCANNER.nextInt();
     }
 
 

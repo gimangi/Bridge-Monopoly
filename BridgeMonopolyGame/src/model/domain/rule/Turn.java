@@ -17,6 +17,8 @@ public class Turn {
 
     private final Queue<Player> remnantQueue = new LinkedList<>();
 
+    private int endPlayers = 0;
+
     public Turn(@NotNull List<Player> players) {
         this.players = new ArrayList(players);
         this.remnantQueue.addAll(players);
@@ -30,8 +32,10 @@ public class Turn {
         Player prevPlayer = remnantQueue.poll();
         if (!prevPlayer.isEnd())
             remnantQueue.add(prevPlayer);
-        else
+        else {
             allowMoveBack = false;
+            endPlayers++;
+        }
         
         return true;
     }
@@ -62,6 +66,10 @@ public class Turn {
         }
 
         return winner;
+    }
+
+    public int getEndPlayers() {
+        return this.endPlayers;
     }
 
 }

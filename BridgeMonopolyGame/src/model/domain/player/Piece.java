@@ -7,7 +7,6 @@ import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Piece {
@@ -48,6 +47,5 @@ public class Piece {
     public Cell getCurCell() {
         return curCell;
     }
-
 
 }

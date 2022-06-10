@@ -46,7 +46,7 @@ public class MapView extends JPanel {
         // put piece
         for (CellView cv : cellViewList) {
             if (cv.getCell() == cell)
-                cv.putPiece(player);
+                cv.putPiece(player.getId());
         }
         updateUI();
     }

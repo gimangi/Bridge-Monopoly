@@ -3,7 +3,6 @@ package view.gui.display;
 import model.domain.cell.BridgeCell;
 import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
-import model.domain.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -89,8 +88,8 @@ public class CellView extends JPanel {
         super.paintComponent(g);
     }
 
-    public void putPiece(@NotNull Player player) {
-        PieceView pieceView = new PieceView(player.getId(), PIECE_WIDTH, PIECE_HEIGHT);
+    public void putPiece(@NotNull int id) {
+        PieceView pieceView = new PieceView(id, PIECE_WIDTH, PIECE_HEIGHT);
         pieceViewList.add(pieceView);
         add(pieceView);
         updateUI();

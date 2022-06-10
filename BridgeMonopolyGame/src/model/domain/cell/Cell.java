@@ -3,10 +3,7 @@ package model.domain.cell;
 import model.data.Direction;
 import model.data.MoveType;
 import model.data.RelativePosition;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Cell {

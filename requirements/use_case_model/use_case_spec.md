@@ -15,8 +15,8 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 5. [**UC202: Stay Turn**](#uc202:-stay-turn)
 6. [**UC203: Move Piece Turn**](#uc203:-move-piece-turn)
 7. [**UC204: Roll a Dice**](#uc204:-roll-a-dice)
-8. [**UC205: Combine Direction**](#uc205:-combine-direction)
-9. [**UC206: Arrive at the End**](#uc206:-arrive-at-the-end)
+8. [**UC206: Combine Direction**](#uc206:-combine-direction)
+9. [**UC207: Arrive at the End**](#uc207:-arrive-at-the-end)
 
 
 
@@ -162,7 +162,7 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 
 
 
-### UC205: Combine Direction
+### UC206: Combine Direction
 
 | Use Case Section                    | Comment                                                      |
 | ----------------------------------- | ------------------------------------------------------------ |
@@ -182,7 +182,7 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 
 
 
-### UC206: Arrive at the End
+### UC207: Arrive at the End
 
 | Use Case Section                    | Comment                                                      |
 | ----------------------------------- | ------------------------------------------------------------ |
@@ -193,7 +193,7 @@ BridgeMonopolyGame의 Use case 명세서 모음입니다.
 | Stakeholders and Interests          | Player : 도착지에 도달해서 스코어를 정산한다.                |
 | Preconditions                       | extend UC203 "Move Piece Turn" -> Player의 Piece가 End 셀로 이동한 경우 |
 | Success Guarantee                   | 해당 Player의 스코어를 정산하고 이후 다른 플레이어는 뒤로 갈 수 없다. |
-| Main Success Scenario               | 1. Player의 최종 점수를 표시한다. </br>2. Player가 더 이상 턴을 가지지 않도록 변경한다.</br>3. 다음 턴부터 다른 Player는 뒤로 이동할 수 없도록 변경한다. |
+| Main Success Scenario               | 1. Player가 도착한 순서에 따라 스코어를 추가한다.</br>2. Player의 최종 점수를 표시한다. </br>3. Player가 더 이상 턴을 가지지 않도록 변경한다.</br>4. 다음 턴부터 모든 Player는 뒤로 이동할 수 없도록 변경한다.</br>5. 만약 1명을 제외한 모든 플레이어가 도착했다면 게임을 종료한다. |
 | Extensions                          | 3a. 이미 End 셀에 도착한 Player가 존재할 경우</br> 1. 해당 스탭을 건너뛴다. |
 | Special Requirements                | -                                                            |
 | Technology and Data Variations List | -                                                            |

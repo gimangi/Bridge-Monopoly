@@ -7,7 +7,6 @@ import model.domain.cell.Cell;
 import model.domain.cell.ItemCell;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
